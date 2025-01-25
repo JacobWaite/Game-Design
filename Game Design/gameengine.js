@@ -15,6 +15,12 @@ class GameEngine {
         this.wheel = null;
         this.keys = {};
 
+        this.left = null;
+        this.right = null;
+        this.up = null;
+        this.down = null;
+        this.A = null;
+        this.B = null;
         // Options and the Details
         this.options = options || {
             debugging: false,
