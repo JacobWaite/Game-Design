@@ -13,5 +13,11 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.init(ctx);
 	gameEngine.addEntity(new Paladin(gameEngine,50,50, ASSET_MANAGER.getAsset("./PlaceHolderSheet.png"), 17, 40, 16, 24, 100, 20, 10, 10));
 	gameEngine.addEntity(new Goblin(gameEngine, 150,150, ASSET_MANAGER.getAsset("./GoblinPlaceHolderSheet.png"), 17, 40, 16, 24, 100, 10, 20, 5));
-	gameEngine.start();
+	
+
+	    // Create and add scene manager AFTER adding other entities
+		const sceneManager = new SceneManager(gameEngine);
+		gameEngine.addEntity(sceneManager);
+
+		gameEngine.start();
 });
