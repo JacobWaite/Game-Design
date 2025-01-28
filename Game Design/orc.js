@@ -2,7 +2,7 @@ class Orc {
     constructor(game, x, y, spritesheet) {
         Object.assign(this, { game, x, y });
 
-        // mario's state variables
+        // orc state variables
         this.facing = 0; // 0 = right, 1 = left, 2 = up, 3 = down
         this.state = 0; // 0 = walking, 1 = attacking, 2 = damage, 3 = death
 
