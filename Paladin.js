@@ -1,8 +1,8 @@
 class Paladin extends Humanoid {
     constructor(game, x, y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, health, strength, speed, intelligence)  {
         super(game,x,y,spriteSheet, width, height, xSpriteOffset, ySpriteOffset,health,strength,speed,intelligence);
-        //this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 0, 64, 64, 0, 2, false, [0.125], false, true));
-        //this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 0, 64, 64, 64, 0, 2, false, [0.25], false, true));
+        this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 200, 112, 125, 7, [0.15], 0, false, false, true));
+        this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 0, 104, 118, 95.5, 8, [0.15], 6.7, false, true, true));
         this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet, 0, 0, 118, 102, 11, [0.25], 2, false, false, true));
 
         this.moving = false;
@@ -40,9 +40,9 @@ class Paladin extends Humanoid {
 
     draw(ctx) {
         if(this.game.mousePressed) {
-            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x, this.y, 2);
+            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x, this.y, 1.25);
         } else if(this.moving){
-            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x, this.y, 2);
+            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x, this.y, 1.25);
         } else {
             this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x, this.y, 1.25);
         }
