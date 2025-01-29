@@ -57,8 +57,9 @@ class SceneManager {
         // Scene manager update logic
         if (this.player) {
             // Center camera on player
-            this.x = this.player.x - this.game.ctx.canvas.width/2;  // Character width and height, camera moving 
-            this.y = this.player.y - this.game.ctx.canvas.height/2;
+            
+            this.x = this.player.x - this.game.ctx.canvas.width/2 + this.player.width*2;  // Character width and height, camera moving 
+            this.y = this.player.y - this.game.ctx.canvas.height/2 + this.player.height;
         }
     }
 
@@ -69,9 +70,9 @@ class SceneManager {
         ctx.restore();
         // Draw the grass background
         if (this.grassImage) {
-            for (let x = 0; x < ctx.canvas.width; x += this.grassImage.width) {
-                for (let y = 0; y < ctx.canvas.height; y += this.grassImage.height) {
-                    ctx.drawImage(this.grassImage, x, y);
+            for (let x = 0; x < ctx.canvas.width*2; x += this.grassImage.width-1) {
+                for (let y = 0; y < ctx.canvas.height*2; y += this.grassImage.height-1) {
+                    ctx.drawImage(this.grassImage, x - this.x, y - this.y);
                 }
             }
         } else {
@@ -81,7 +82,7 @@ class SceneManager {
         // Draw trees on the grass
         if (this.treeImage) {
             for (let pos of this.treePositions) {
-                ctx.drawImage(this.treeImage, pos.x, pos.y, 64 * 2, 64 * 2); // Adjust the size (64x64) as needed
+                ctx.drawImage(this.treeImage, pos.x - this.x, pos.y - this.y, 64 * 2, 64 * 2); // Adjust the size (64x64) as needed
             }
         } else {
             console.warn("Tree image not available!");

@@ -12,6 +12,7 @@ class Paladin extends Humanoid {
         this.idle = true;
         this.movementVector = 0;
         this.facing = 1; // 1 = right, -1 = left
+        
     }
 
 
@@ -22,25 +23,25 @@ class Paladin extends Humanoid {
             this.attacking = false;
             this.idle = !this.dead;
         }
-
+        this.elapsedTime += this.game.clockTick;
         if(!this.dead) {
             this.moving = false;
             if(this.game.keys.get("w")){
                 let newX = 0;
-                this.y -= 
+                this.y -= this.game.clockTick * 200;
                 this.moving = true;
             }
             if(this.game.keys.get("a")){
-                this.x -= this.equalizeDiagonalMovement();
+                this.x -= this.game.clockTick * 200;
                 this.moving = true;
                 this.facing = -1;
             }
             if(this.game.keys.get("s")){
-                this.y += this.equalizeDiagonalMovement();
+                this.y += this.game.clockTick * 200;
                 this.moving = true;
             }   
             if(this.game.keys.get("d")){
-                this.x += this.equalizeDiagonalMovement();
+                this.x += this.game.clockTick * 200;
                 this.moving = true;
                 this.facing = 1;
             }
@@ -57,16 +58,16 @@ class Paladin extends Humanoid {
         ctx.save();
         if (this.facing == -1) {
             ctx.scale(-1, 1);
-            ctx.translate(-this.x * 2 - this.width * 1.25, 0);
+            ctx.translate(-(this.x - this.game.camera.x) * 2.12, 0);
         }
         if(this.dead) {
-            this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x, this.y, 1.25); // this.x - this.camera.x 
+            this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25); // this.x - this.camera.x 
         } else if(this.game.mousePressed) {
-            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x, this.y, 1.25);
+            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
         } else if(this.moving){
-            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x, this.y, 1.25);
+            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, 1.25);
         } else {
-            this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x, this.y, 1.25);
+            this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
         }
         ctx.restore();
     }
