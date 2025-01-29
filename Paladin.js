@@ -33,6 +33,7 @@ class Paladin extends Humanoid {
         }
         this.hitBox.updateHitBox();
     }
+            
     equalizeDiagonalMovement() {
         let value = Math.sqrt(Math.pow(1,2)+Math.pow(1,2));
         return value;
