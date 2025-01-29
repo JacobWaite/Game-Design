@@ -96,7 +96,7 @@ class GameEngine {
             }
         }
 
-        this.camera.draw(this.ctx);
+        // this.camera.draw(this.ctx);
     };
 
     update() {
@@ -117,7 +117,7 @@ class GameEngine {
             }
         }
 
-        this.camera.update();
+        // this.camera.update();
     };
 
     loop() {

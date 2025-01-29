@@ -1,6 +1,6 @@
 class Animation {
-    constructor(spritesheet, xStart, yStart, spriteWidth, spriteHeight, spritePadding, frameCount, variableFrameTime, frameDurations, reverse, loop) {
-        Object.assign(this, { spritesheet, xStart, yStart, spriteWidth, spriteHeight, spritePadding, frameCount, variableFrameTime, frameDurations, reverse, loop });
+    constructor(spritesheet, xStart, yStart, spriteWidth, spriteHeight, frameCount, frameDurations, spritePadding, variableFrameTime, reverse, loop) {
+        Object.assign(this, { spritesheet, xStart, yStart, spriteWidth, spriteHeight, frameCount, frameDurations, spritePadding, variableFrameTime, reverse, loop });
 
         this.elapsedTime = 0;
         this.totalTime = 0;
