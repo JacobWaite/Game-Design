@@ -13,7 +13,9 @@ class SceneManager {
         this.paused = false;
 
         // Reference to player (paladin)
-        this.player = null;
+        this.playerImage = ASSET_MANAGER.getAsset("./PlaceHolderSheet.png");
+        this.player = new Paladin(gameEngine,50,50, this.playerImage, 17, 40, 16, 24, 100, 20, 10, 10);
+        this.game.addEntity(this.player);
 
         // UI states
         this.showInventory = false;
@@ -35,8 +37,8 @@ class SceneManager {
         this.treePositions = [
             { x: 100, y: 200 },
             { x: 300, y: 250 },
-            { x: 500, y: 220 },
-            { x: 700, y: 240 },
+            { x: 500, y: 220 }, //220
+            { x: 700, y: 240 }, //240
         ];
 
         // Load initial level
@@ -54,8 +56,8 @@ class SceneManager {
     // Convert world coordinates to screen coordinates
     worldToScreen(x, y) {
         return {
-            x: Math.round(x - this.x),
-            y: Math.round(y - this.y)
+            x: (x - this.x),
+            y: (y - this.y)
         };
     }
 
@@ -63,6 +65,9 @@ class SceneManager {
         // Scene manager update logic
         if (this.player) {
             // Directly center the camera on the player without smoothing
+            this.player.x = this.game.ctx.canvas.width / 2 - 64;
+            this.player.y = this.game.ctx.canvas.height / 2 - 64;
+
             this.x = this.player.x - this.game.ctx.canvas.width / 2;
             this.y = this.player.y - this.game.ctx.canvas.height / 2;
         }
@@ -71,12 +76,12 @@ class SceneManager {
     draw(ctx) {
         // Save the current context state
         ctx.save();
-
+        
         // Draw the grass background with camera offset
         if (this.grassImage) {
             const tileSize = this.grassImage.width;
-            const startX = Math.floor(this.x / tileSize) * tileSize;
-            const startY = Math.floor(this.y / tileSize) * tileSize;
+            const startX = this.x;
+            const startY = this.y;
             
             for (let x = startX; x < startX + ctx.canvas.width + tileSize; x += tileSize) {
                 for (let y = startY; y < startY + ctx.canvas.height + tileSize; y += tileSize) {
@@ -90,10 +95,11 @@ class SceneManager {
         if (this.treeImage) {
             for (let pos of this.treePositions) {
                 const screen = this.worldToScreen(pos.x, pos.y);
-                ctx.drawImage(this.treeImage, screen.x, screen.y, 64, 64);
+                ctx.drawImage(this.treeImage, screen.x, screen.y, 64 * 2, 64 * 2);
             }
         }
 
+        this.player.draw(ctx);
         // Reset transform for HUD elements (these should not move with camera)
         ctx.restore();
 
@@ -113,12 +119,16 @@ class SceneManager {
             ctx.fillText(`Attack: ${this.player.attack}`, 100, 50);
             ctx.fillText(`Speed: ${this.player.speed}`, 250, 50);
             ctx.fillText(`Defense: ${this.player.defense}`, 400, 50);
+
+            
         }
 
         // Draw debug info if enabled
         if (this.game.debug) {
             this.drawDebugInfo(ctx);
         }
+
+    
     }
     
     drawHealthBar(ctx, x, y, width, height) {

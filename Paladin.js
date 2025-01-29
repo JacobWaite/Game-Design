@@ -33,7 +33,7 @@ class Paladin extends Humanoid {
         }
         this.hitBox.updateHitBox();
     }
-            
+
     equalizeDiagonalMovement() {
         let value = Math.sqrt(Math.pow(1,2)+Math.pow(1,2));
         return value;
@@ -41,11 +41,11 @@ class Paladin extends Humanoid {
 
     draw(ctx) {
         if(this.game.mousePressed) {
-            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x, this.y, 2);
+            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
         } else if(this.moving){
-            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x, this.y, 2);
+            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
         } else {
-            this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x, this.y, 2);
+            this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 2);
         }
     }
 }
