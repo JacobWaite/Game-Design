@@ -9,7 +9,7 @@ class Humanoid extends Entity{
     }
 
     setStatValue(statName, statValue) {
-        array = this.statPoints.get(statName);
+        let array = this.statPoints.get(statName);
         if(statValue <= 100 && statValue > 0) {
             array[0] = statValue;
         } else {
@@ -18,17 +18,17 @@ class Humanoid extends Entity{
     }
 
     setStatPoints(statName) {
-        array = this.statPoints.get(statName);
+        let array = this.statPoints.get(statName);
         array[1] = array[1] + 1;
     }
 
     getStatValue(statName) {
-        array = this.statPoints.get(statName);
-        return array[1];
+        let array = this.statPoints.get(statName);
+        return array[0];
     }
 
     getStatPoints(statName) {
-        array = this.statPoints.get(statName);
+        let array = this.statPoints.get(statName);
         return array[1];
     }
 }
