@@ -46,6 +46,12 @@ class SceneManager {
     }
 
     loadLevel(level) {
+        // this.game.entities = [];
+        // this.x = 0;
+
+        // for (var i = 0; i < level.length; i++) {
+
+        // }
         // Reference the first paladin entity as the player
         this.player = this.game.entities.find(entity => entity instanceof Paladin);
         if (!this.player) {
