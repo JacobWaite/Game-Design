@@ -95,6 +95,8 @@ class GameEngine {
                 this.entities[i].hitBox.drawHitBox(this.ctx);
             }
         }
+
+        // this.camera.draw(this.ctx);
     };
 
     update() {
@@ -114,6 +116,8 @@ class GameEngine {
                 this.entities.splice(i, 1);
             }
         }
+
+        // this.camera.update();
     };
 
     loop() {
