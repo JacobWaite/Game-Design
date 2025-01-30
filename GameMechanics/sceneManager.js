@@ -34,11 +34,11 @@ class SceneManager {
         // Predefined tree positions
         this.treePositions = [
             { x: 100, y: 200 },
-            { x: 300, y: 250 },
-            { x: 500, y: 220 }, //220
-            { x: 700, y: 240 }, //240
-            { x: 500, y: 220 },
-            { x: 700, y: 240 },
+            { x: 400, y: 250 },
+            { x: 900, y: 220 }, //220
+            { x: 1200, y: 240 }, //240
+            { x: 1400, y: 220 },
+            { x: 1600, y: 240 },
         ];
 
         // Load initial level
@@ -82,7 +82,7 @@ class SceneManager {
         // Draw trees on the grass
         if (this.treeImage) {
             for (let pos of this.treePositions) {
-                ctx.drawImage(this.treeImage, pos.x - this.x, pos.y - this.y, 64 * 5, 64 * 5); // Adjust the size (64x64) as needed
+                ctx.drawImage(this.treeImage, pos.x - this.x, pos.y - this.y, 64 * 8, 64 * 8); // Adjust the size (64x64) as needed
             }
         } else {
             console.warn("Tree image not available!");
