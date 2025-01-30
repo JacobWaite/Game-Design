@@ -20,13 +20,13 @@ class SceneManager {
         this.showStats = false;
 
         // Load the grass background image
-        this.grassImage = ASSET_MANAGER.getAsset("./Grass.png");
+        this.grassImage = ASSET_MANAGER.getAsset("./Sprites/Grass.png");
         if (!this.grassImage) {
             console.error("Grass image not found!");
         }
         
         // Load the tree image
-        this.treeImage = ASSET_MANAGER.getAsset("./Tree.png");
+        this.treeImage = ASSET_MANAGER.getAsset("./Sprites/Tree.png");
         if (!this.treeImage) {
             console.error("Tree image not found!");
         }
@@ -82,7 +82,7 @@ class SceneManager {
         // Draw trees on the grass
         if (this.treeImage) {
             for (let pos of this.treePositions) {
-                ctx.drawImage(this.treeImage, pos.x - this.x, pos.y - this.y, 64 * 2, 64 * 2); // Adjust the size (64x64) as needed
+                ctx.drawImage(this.treeImage, pos.x - this.x, pos.y - this.y, 64 * 5, 64 * 5); // Adjust the size (64x64) as needed
             }
         } else {
             console.warn("Tree image not available!");

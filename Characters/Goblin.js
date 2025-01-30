@@ -13,7 +13,7 @@ class Goblin extends Humanoid {
         //this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x, this.y, 1.25);
         //this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x, this.y, 1.25);
         //this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x, this.y, 1.25);
-        this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x, this.y, 1.25);
+        this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
     }
 
 }

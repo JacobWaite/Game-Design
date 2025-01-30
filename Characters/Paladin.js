@@ -1,7 +1,7 @@
 class Paladin extends Humanoid {
     constructor(game, x, y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, health, strength, speed, intelligence)  {
         super(game,x,y,spriteSheet, width, height, xSpriteOffset, ySpriteOffset,health,strength,speed,intelligence);
-        this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 209, 112, 102, 7, [0.15], 0, false, false, true));
+        this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 209, 112, 102, 7, [0.09], 0, false, false, true));
         this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 0, 97.5, 118, 102, 8, [0.15], 6.7, false, false, true));
         this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet, 0, 0, 118, 102, 11, [0.25], 2, false, false, true));
         this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet, -1, 315, 114, 102, 8, [0.25], 2, false, false, true));
@@ -10,11 +10,10 @@ class Paladin extends Humanoid {
         this.moving = false;
         this.attacking = false;
         this.idle = true;
-        this.movementVector = 0;
+ 
         this.facing = 1; // 1 = right, -1 = left
         
     }
-
 
     update() {
         if(this.game.keys.get("k")){
@@ -27,21 +26,20 @@ class Paladin extends Humanoid {
         if(!this.dead) {
             this.moving = false;
             if(this.game.keys.get("w")){
-                let newX = 0;
-                this.y -= this.game.clockTick * 200;
+                this.y -= this.game.clockTick * this.getStatValue("speed"); 
                 this.moving = true;
             }
             if(this.game.keys.get("a")){
-                this.x -= this.game.clockTick * 200;
+                this.x -= this.game.clockTick * this.getStatValue("speed"); 
                 this.moving = true;
                 this.facing = -1;
             }
             if(this.game.keys.get("s")){
-                this.y += this.game.clockTick * 200;
+                this.y +=this.game.clockTick * this.getStatValue("speed"); 
                 this.moving = true;
             }   
             if(this.game.keys.get("d")){
-                this.x += this.game.clockTick * 200;
+                this.x += this.game.clockTick * this.getStatValue("speed");
                 this.moving = true;
                 this.facing = 1;
             }
@@ -50,7 +48,7 @@ class Paladin extends Humanoid {
     }
 
     equalizeDiagonalMovement() {
-        let value = Math.sqrt(Math.pow(1,2)+Math.pow(1,2));  // 
+        let value = Math.sqrt(1/(this.x+this.y)); // 
         return value;
     }
 
