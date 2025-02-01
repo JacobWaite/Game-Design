@@ -22,6 +22,10 @@ class BoundingBox{
 
     drawHitBox(ctx) {
         ctx.strokeStyle = "red";
-        ctx.strokeRect(this.left, this.top, this.width*this.scale, this.height* this.scale);
+        ctx.strokeRect(this.left - this.parent.game.camera.x, this.top - this.parent.game.camera.y, this.width*this.scale, this.height* this.scale);
     } 
+
+    toString() {
+        return "LeftBound: " + this.left + "TopBound: " + this.top + "RightBound: " + this.right + "BottomBound: " + this.bottom;
+    }
 }

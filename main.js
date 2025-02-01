@@ -15,7 +15,6 @@ ASSET_MANAGER.downloadAll(() => {
 	ctx.imageSmoothingEnabled = false;
 	gameEngine.init(ctx);
 
-	// Create and add scene manager AFTER adding other entities
 	new SceneManager(gameEngine);
 
 	gameEngine.start();

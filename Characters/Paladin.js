@@ -77,7 +77,14 @@ class Paladin extends Humanoid {
         } else {
             this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, 1.25);
         }
-        
+        for(let i = 0; i < this.game.entities.length-1; i++) {
+
+            if(!(this.game.entities[i] instanceof Paladin) && this.hitBox.collide(this.game.entities[i].hitBox) ) {
+                console.log("drawn");
+                this.hitBox.drawHitBox(ctx);
+                this.game.entities[i].hitBox.drawHitBox(ctx);
+            }
+        }
         ctx.restore();
     }
 }
