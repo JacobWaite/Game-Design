@@ -15,7 +15,6 @@ class Paladin extends Humanoid {
         this.facing = 1; // 1 = right, -1 = left
     }
 
-
     update() {
         if(this.game.keys.get("g")){
             this.flash = !this.flash;

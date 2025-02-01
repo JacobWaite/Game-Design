@@ -5,11 +5,14 @@ class Entity {
         this.hitBox = new BoundingBox(this,this.width, this.height, xSpriteOffset, ySpriteOffset,2);
     };
 
-    update() {}; 
+    update() {
 
-    draw() {};
+    }; 
+
+    draw(ctx) {
+        ctx.drawImage(this.spriteSheet, this.x - this.game.camera.x, this.y - this.game.camera.y);
+    };
    
     collision(collidingEntity) {};
-
 
 }
