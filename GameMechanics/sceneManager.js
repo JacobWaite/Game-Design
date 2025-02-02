@@ -2,7 +2,7 @@ class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
-        
+       
         // Camera position
         this.x = 0;
         this.y = 0;
