@@ -116,7 +116,7 @@ class SceneManager {
         if (this.grassImage) {
             for (let x = 0; x < this.worldWidth * 2; x += this.grassImage.width - 1) {
                 for (let y = 0; y < this.worldHeight * 2; y += this.grassImage.height - 1) {
-                    this.game.addBackground(new Background(this.game, x, y, this.grassImage));
+                    this.game.addBackground(new background(this.game, x, y, this.grassImage));
                 }
             }
         } else {
