@@ -2,7 +2,7 @@
  * Creates an object to represent an image to be drawn in the game back ground.
  * The game background is defined as any image that cannot affect a player.
  */
-class Background {
+class background {
     /**
      * Instantiates a Background Object. 
      * @param {gameengine} game the gameengine object the background should be drawn to.
