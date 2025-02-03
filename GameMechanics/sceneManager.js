@@ -2,7 +2,7 @@ class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
-       
+        
         // Camera position
         this.x = 0;
         this.y = 0;
@@ -27,7 +27,7 @@ class SceneManager {
         if (!this.grassImage) {
             console.error("Grass image not found!");
         }
-        
+
         // Load the tree image
         this.treeImage = ASSET_MANAGER.getAsset("./Sprites/Tree.png");
         if (!this.treeImage) {
@@ -38,24 +38,86 @@ class SceneManager {
         this.treePositions = [
             { x: 100, y: 200 },
             { x: 400, y: 250 },
-            { x: 900, y: 220 }, //220
-            { x: 1200, y: 240 }, //240
+            { x: 900, y: 220 },
+            { x: 1200, y: 240 },
             { x: 1400, y: 220 },
             { x: 1600, y: 240 },
         ];
 
         // Load initial level
         this.loadLevel(1);
+
+        //********** START: Start screen code
+        // Flag to indicate if start screen is active
+        this.startScreenActive = true;
+
+        // Load start screen background image
+        this.startBackground = ASSET_MANAGER.getAsset("./Sprites/Background.png");
+        if (!this.startBackground) {
+            console.error("Start screen background image not found!");
+        }
+
+        // Define buttons for start screen
+        // Adjust x, y, width, height as needed for your layout
+        this.buttons = {
+            start: { x: 300, y: 300, width: 200, height: 50, text: "START GAME", defaultColor: "#FFFFFF", hoverColor: "#076500", currentColor: "#FFFFFF" },
+            exit: { x: 300, y: 400, width: 200, height: 50, text: "EXIT GAME", defaultColor: "#FFFFFF", hoverColor: "#076500", currentColor: "#FFFFFF" }
+        };
+        const canvasWidth = this.game.ctx.canvas.width;
+        this.buttons.start.x = (canvasWidth - this.buttons.start.width) / 2;
+        this.buttons.exit.x = (canvasWidth - this.buttons.exit.width) / 2;
+
+        // Mouse move event to change button color on hover
+        this.handleMouseMove = (e) => {
+            if (!this.startScreenActive) return;
+            const rect = this.game.ctx.canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            for (let key in this.buttons) {
+                let btn = this.buttons[key];
+                if (mouseX >= btn.x && mouseX <= btn.x + btn.width &&
+                    mouseY >= btn.y && mouseY <= btn.y + btn.height) {
+                    btn.currentColor = btn.hoverColor;
+                } else {
+                    btn.currentColor = btn.defaultColor;
+                }
+            }
+        };
+
+        // Mouse down event to handle button clicks
+        this.handleMouseDown = (e) => {
+            if (!this.startScreenActive) return;
+            const rect = this.game.ctx.canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            for (let key in this.buttons) {
+                let btn = this.buttons[key];
+                if (mouseX >= btn.x && mouseX <= btn.x + btn.width &&
+                    mouseY >= btn.y && mouseY <= btn.y + btn.height) {
+                    if (key === "start") {
+                        // Start the game
+                        this.startScreenActive = false;
+                    } else if (key === "exit") {
+                        // Exit the game; note that window.close() may not work in all browsers.
+                        window.open('', '_self').close();
+                    }
+                }
+            }
+        };
+
+        // Add event listeners for start screen interaction
+        this.game.ctx.canvas.addEventListener("mousemove", this.handleMouseMove);
+        this.game.ctx.canvas.addEventListener("mousedown", this.handleMouseDown);
+        //********** END: Start screen code
     }
 
     loadLevel(level) {
-        // this.game.entities = [];
+  // this.game.entities = [];
         // this.x = 0;
 
         // for (var i = 0; i < level.length; i++) {
 
         // }
-
         if (this.grassImage) {
             for (let x = 0; x < this.worldWidth; x += this.grassImage.width - 1) {
                 for (let y = 0; y < this.worldHeight * 2; y += this.grassImage.height - 1) {
@@ -90,43 +152,77 @@ class SceneManager {
     }
 
     update() {
+        //********** START: Start screen update code
+        if (this.startScreenActive) {
+            // Do not update game scene while on start screen
+            return;
+        }
+        //********** END: Start screen update code
+
         // Scene manager update logic
         if (this.player) {
-            // Center camera on player           
-            let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;  // Character width and height, camera moving 
-            let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
-        
-        if (currentX <= 0) {
-            this.x = 0;
-        }
-        else {
-            this.x = currentX;
-        }
+            // Center camera on player
+            let currentX = this.player.x - this.game.ctx.canvas.width/2 + this.player.width*2;
+            let currentY = this.player.y - this.game.ctx.canvas.height/2 + this.player.height;
 
-        if (currentY <= 0) {
-            this.y = 0;
-        }
-        else {
-            this.y = currentY;
-        }
-
-        if (currentX >= this.worldWidth) {
-            this.x = 0;
-        }
-        else {
-            this.x = currentX;
-        }
-
-        if (currentY >= this.worldHeight) {
-            this.y = 0;
-        }
-        else {
-            this.y = currentY;
-        }
+            if (currentX <= 0) {
+                this.x = 0;
+            }
+            else {
+                this.x = currentX;
+            }
+    
+            if (currentY <= 0) {
+                this.y = 0;
+            }
+            else {
+                this.y = currentY;
+            }
+    
+            if (currentX >= this.worldWidth) {
+                this.x = 0;
+            }
+            else {
+                this.x = currentX;
+            }
+    
+            if (currentY >= this.worldHeight) {
+                this.y = 0;
+            }
+            else {
+                this.y = currentY;
+            }
         }
     }
 
     draw(ctx) {
+        //********** START: Start screen draw code
+        if (this.startScreenActive) {
+            // Draw start screen background
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            if (this.startBackground) {
+                ctx.drawImage(this.startBackground, 0, 0, ctx.canvas.width, ctx.canvas.height);
+            } else {
+
+            }
+            // Draw buttons
+            for (let key in this.buttons) {
+                let btn = this.buttons[key];
+                ctx.fillStyle = btn.currentColor;
+                ctx.fillRect(btn.x, btn.y, btn.width, btn.height);
+                // Draw button text centered
+                ctx.fillStyle = "black";
+                ctx.font = "20px Arial";
+                const textMetrics = ctx.measureText(btn.text);
+                const textX = btn.x + (btn.width - textMetrics.width) / 2;
+                const textY = btn.y + (btn.height + 20) / 2;
+                ctx.fillText(btn.text, textX, textY);
+            }
+            return;
+        }
+        //********** END: Start screen draw code
+
+        // Reset transform for HUD elements (these should not move with camera)
         ctx.restore();
 
         // Draw HUD background
