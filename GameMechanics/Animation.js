@@ -32,11 +32,7 @@ class Animation {
         if(!this.loop && this.currentFrame() == this.frameCount) {
             this.finished = true;
             return;
-        }
-       /* if (PARAMS.DEBUG) {
-            ctx.strokeStyle = 'Green';
-            ctx.strokeRect(x, y, this.spriteSize* scale, this.spriteSize* scale);
-        }*/
+        } 
     };
 
     currentFrame() {

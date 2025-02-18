@@ -8,6 +8,7 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
+        this.background = [];
 
         // Information on the input
         this.click = false;
@@ -84,9 +85,18 @@ class GameEngine {
         this.entities.push(entity);
     };
 
+    addBackground(background) {
+        this.background.push(background);
+    };
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+
+        for (let i = this.background.length - 1; i >= 0; i--) {
+            this.background[i].draw(this.ctx);
+        }
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
@@ -96,12 +106,13 @@ class GameEngine {
             }
         }
 
-        // this.camera.draw(this.ctx);
+         this.camera.draw(this.ctx);
     };
 
     update() {
         let entitiesCount = this.entities.length;
         this.debug = document.getElementById("debug").checked;
+        this.camera.update();
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
 
@@ -117,7 +128,6 @@ class GameEngine {
             }
         }
 
-        // this.camera.update();
     };
 
     loop() {
