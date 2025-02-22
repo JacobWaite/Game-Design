@@ -46,7 +46,8 @@ class SceneManager {
 
         // Load initial level
         this.loadLevel(1);
-
+        this.playergui = new playerGUI(this.player,this.game,ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
+        
         //********** START: Start screen code
         // Flag to indicate if start screen is active
         this.startScreenActive = true;
@@ -109,6 +110,7 @@ class SceneManager {
         this.game.ctx.canvas.addEventListener("mousemove", this.handleMouseMove);
         this.game.ctx.canvas.addEventListener("mousedown", this.handleMouseDown);
         //********** END: Start screen code
+        
     }
 
     loadLevel(level) {
@@ -125,12 +127,12 @@ class SceneManager {
 
         if (this.treeImage) {
             for (let pos of this.treePositions) {
-                this.game.addEntity(new Entity(this.game, pos.x, pos.y, this.treeImage, 40, 80, 20, 0, 2)); // Adjust the size (64x64) as needed
+                this.game.addEntity(new Entity(this.game, pos.x, pos.y, this.treeImage, 40, 80, 40, 0, 2)); // Adjust the size (64x64) as needed
             }
         } else {
             console.warn("Tree image not available!");
         }
-        this.game.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 25, 50, 15, 30, 1.25, 100, 20, 150, 10));
+        this.game.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 40, 90, 0, 0, 1.25, 100, 20, 150, 10));
 
         this.player = this.game.entities.find(entity => entity instanceof Paladin);
         if (!this.player) {
@@ -143,47 +145,42 @@ class SceneManager {
     }
 
     update() {
+        
         //********** START: Start screen update code
         if (this.startScreenActive) {
             // Do not update game scene while on start screen
             return;
         }
         //********** END: Start screen update code
-
+        
         // Scene manager update logic
         if (this.player) {
             // Center camera on player           
+            this.playergui.update(true);
             let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;  // Character width and height, camera moving 
             let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
             this.x = currentX;
             this.y = currentY;
-            /*
+            
             if (currentX <= 0) {
                 this.x = 0;
-            } else {
-            this.x = currentX;
-            }
+            } 
             if (currentY <= 0) {
                 this.y = 0;
-            } else {
-                this.y = currentY;
-            }
+            } 
             if (currentX >= this.worldWidth) {
-                this.x = 0;
-            } else {
-                this.x = currentX;
-            }
+                this.x = this.worldWidth - this.game.ctx.canvas.width;
+            } 
             if (currentY >= this.worldHeight) {
-                this.y = 0;
+                this.y = this.worldHeight - this.game.ctx.canvas.height;
             }
-            else {
-                this.y = currentY;
-            }
-            */
+            
+            
         }
     }
 
     draw(ctx) {
+        
         //********** START: Start screen draw code
         if (this.startScreenActive) {
             // Draw start screen background
@@ -209,7 +206,7 @@ class SceneManager {
             return;
         }
         //********** END: Start screen draw code
-
+        
         // Reset transform for HUD elements (these should not move with camera)
         ctx.restore();        
 
@@ -221,7 +218,7 @@ class SceneManager {
         if (this.player) {
             // Health bar
             this.drawHealthBar(ctx, 10, 10, 200, 20);
-
+            this.playergui.draw(ctx);
             // Stats
             ctx.fillStyle = "white";
             ctx.font = "16px Arial";
@@ -267,6 +264,16 @@ class SceneManager {
         ctx.fillText(`Entities: ${this.game.entities.length}`, 10, ctx.canvas.height - 40);
         if (this.player) {
             ctx.fillText(`Player Pos: (${Math.round(this.player.x)}, ${Math.round(this.player.y)})`, 10, ctx.canvas.height - 60);
+            ctx.fillText(`Collision: ${this.player.colliding} Direction: ${this.player.collisionDirection}`, 12, ctx.canvas.height - 80);
+            ctx.fillText(this.player.hitBox.toString(), 10, ctx.canvas.height - 100);
+        }
+
+        for(let i = 0; i < this.game.entities.length; i ++) {
+            if(!(this.game.entities[i] instanceof Paladin)) {
+                ctx.fillText(`X: ${this.game.entities[i].x}`,this.game.entities[i].x - this.x, this.game.entities[i].y-this.y - 20);
+                ctx.fillText(`Y: ${this.game.entities[i].y}`, this.game.entities[i].x - this.x, this.game.entities[i].y - this.y);
+                ctx.fillText(`Hitbox: ${this.game.entities[i].hitBox.toString()}`,this.game.entities[i].x - this.x - (this.game.entities[i].width * 2), this.game.entities[i].y-this.y + this.game.entities[i].height * 2);
+            }
         }
     }
 }
