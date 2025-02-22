@@ -14,19 +14,20 @@ class Paladin extends Humanoid {
         this.animationPlayer.addAnimation("flash", new Animation(this.spriteSheet, 0, 97.5, 118, 102, 8, [0.05], 6.7, false, false, true));
         this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet, 0, 0, 118, 102, 11, [0.25], 2, false, false, true));
         this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet, -1, 315, 114, 102, 8, [0.25], 2, false, false, true));
-        this.experienceLevel = 1;
+        this.experienceLevel = 0;
         this.flash = false;
         this.dead = false;
         this.moving = false;
         this.attacking = false;
         this.idle = true;
+        this.colliding = false;
         this.facing = 1; // 1 = right, -1 = left
+        this.collisionDirection = "false";
     }
     /**
      * @inheritdoc
      */
     update() {
-        this.hitBox.updateHitBox();
         if(this.game.keys.get("g")){
             this.flash = !this.flash;
         }
@@ -63,8 +64,27 @@ class Paladin extends Humanoid {
                 this.idle = !this.attacking;
                 
             }
-        }
-    }
+            this.hitBox.updateHitBox();
+            this.colliding = false;
+            for(let i = 0; i < this.game.entities.length; i++) {
+                let otherHitbox = this.game.entities[i].hitBox;
+                if(this.hitBox.collide(otherHitbox) && !(otherHitbox.parent instanceof Humanoid)) {
+                    this.colliding = true;
+                    let direction = this.hitBox.collisionDirection(otherHitbox);
+                    this.collisionDirection = direction;
+                   if(direction == "right") {
+                        this.x = otherHitbox.left - this.hitBox.width; 
+                   } else if(direction == "left") {
+                        this.x = otherHitbox.right;
+                   } else if(direction == "top") {
+                        this.y = otherHitbox.bottom;
+                   } else if(direction == "bottom") {
+                        this.y = otherHitbox.top - this.hitBox.height;
+                   }
+                }
+            }
+        } 
+    };
     /*
     equalizeDiagonalMovement() {
         let value = Math.sqrt(Math.pow(1,2)+Math.pow(1,2));  // 
@@ -91,11 +111,5 @@ class Paladin extends Humanoid {
             this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, 1.25);
         }
         ctx.restore();
-        for(let i = 0; i < this.game.entities.length; i++) {
-            this.hitBox.drawHitBox(ctx);
-            if(!(this.game.entities[i] instanceof Paladin) && this.hitBox.collide(this.game.entities[i].hitBox) ) {
-                this.game.entities[i].hitBox.drawHitBox(ctx);
-            }
-        }
     }
 }
