@@ -24,6 +24,8 @@ class SceneManager {
 
         // Load the grass background image
         this.grassImage = ASSET_MANAGER.getAsset("./Sprites/Grass.png");
+        //Play Background Music
+
         if (!this.grassImage) {
             console.error("Grass image not found!");
         }
@@ -97,6 +99,7 @@ class SceneManager {
                     if (key === "start") {
                         // Start the game
                         this.startScreenActive = false;
+                        ASSET_MANAGER.stopBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
                     } else if (key === "exit") {
                         // Exit the game; note that window.close() may not work in all browsers.
                         window.open('', '_self').close();
@@ -109,10 +112,55 @@ class SceneManager {
         this.game.ctx.canvas.addEventListener("mousemove", this.handleMouseMove);
         this.game.ctx.canvas.addEventListener("mousedown", this.handleMouseDown);
         //********** END: Start screen code
+        // Add this at the end of the SceneManager constructor
+        const canvas = this.game.ctx.canvas;
+        this.soundCheckbox = document.createElement("input");
+        this.soundCheckbox.type = "checkbox";
+        this.soundCheckbox.id = "soundCheckbox";
+// Start unchecked so audio remains muted until the user interacts.
+        this.soundCheckbox.checked = false;
+
+        this.soundLabel = document.createElement("label");
+        this.soundLabel.htmlFor = "soundCheckbox";
+        this.soundLabel.textContent = " SOUND";
+
+// Create a container div to position the checkbox
+        this.soundContainer = document.createElement("div");
+        this.soundContainer.style.position = "absolute";
+        this.soundContainer.style.bottom = "10px";
+// Align it with the canvas left edge (adjust as needed)
+        this.soundContainer.style.left = canvas.offsetLeft + "px";
+        this.soundContainer.style.zIndex = "1000";
+
+        this.soundContainer.appendChild(this.soundCheckbox);
+        this.soundContainer.appendChild(this.soundLabel);
+        document.body.appendChild(this.soundContainer);
+
+// Initially mute all sounds
+        for (let key in ASSET_MANAGER.audioCache) {
+            if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
+                ASSET_MANAGER.audioCache[key].muted = true;
+            }
+        }
+
+// Toggle sound muting based on checkbox state
+        this.soundCheckbox.addEventListener("change", () => {
+            const mute = !this.soundCheckbox.checked;
+            if (this.soundCheckbox.checked){
+                ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
+            }
+            for (let key in ASSET_MANAGER.audioCache) {
+                if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
+                    ASSET_MANAGER.audioCache[key].muted = mute;
+                }
+            }
+        });
+
     }
 
     loadLevel(level) {
         // Reference the first paladin entity as the player
+
         if (this.grassImage) {
             for (let x = 0; x < this.worldWidth * 2; x += this.grassImage.width - 1) {
                 for (let y = 0; y < this.worldHeight * 2; y += this.grassImage.height - 1) {
@@ -146,6 +194,7 @@ class SceneManager {
         //********** START: Start screen update code
         if (this.startScreenActive) {
             // Do not update game scene while on start screen
+
             return;
         }
         //********** END: Start screen update code
@@ -157,6 +206,7 @@ class SceneManager {
             let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
             this.x = currentX;
             this.y = currentY;
+
             /*
             if (currentX <= 0) {
                 this.x = 0;
@@ -186,7 +236,9 @@ class SceneManager {
     draw(ctx) {
         //********** START: Start screen draw code
         if (this.startScreenActive) {
+
             // Draw start screen background
+
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             if (this.startBackground) {
                 ctx.drawImage(this.startBackground, 0, 0, ctx.canvas.width, ctx.canvas.height);
