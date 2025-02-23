@@ -1,12 +1,14 @@
 class Skeleton extends Humanoid{
 
-	constructor(game, x, y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, health, strength, speed, intelligence) {
-		super(game,x,y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, health, strength, speed,intelligence);
-		this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 3, 0, 57, 98, 5, [0.15], 1, false, false, true));
+	constructor(game, x, y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed, intelligence) {
+		super(game,x,y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed,intelligence);
+		this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 3, 0, 56, 98, 5, [0.15], 1, false, false, true));
 		this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 3, 0, 48.0059, 75, 9, [0.15], 1, false, false, true));
 	};
 
-	update() {};
+	update() {
+		this.hitBox.updateHitBox();
+	};
 
 	draw(ctx) {
 

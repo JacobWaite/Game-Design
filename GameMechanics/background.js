@@ -1,4 +1,15 @@
-class Background { 
+/**
+ * Creates an object to represent an image to be drawn in the game back ground.
+ * The game background is defined as any image that cannot affect a player.
+ */
+class background {
+    /**
+     * Instantiates a Background Object. 
+     * @param {gameengine} game the gameengine object the background should be drawn to.
+     * @param {number} x the x location of the background image.
+     * @param {number} y the y location of the background image.
+     * @param {HTMLImageElement} sprite the image to draw.
+     */ 
     constructor(game, x, y, sprite) {
         Object.assign(this, { game, x, y, sprite});
 

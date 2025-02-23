@@ -106,12 +106,13 @@ class GameEngine {
             }
         }
 
-        // this.camera.draw(this.ctx);
+         this.camera.draw(this.ctx);
     };
 
     update() {
         let entitiesCount = this.entities.length;
         this.debug = document.getElementById("debug").checked;
+        this.camera.update();
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
 
@@ -127,7 +128,6 @@ class GameEngine {
             }
         }
 
-        this.camera.update();
     };
 
     loop() {

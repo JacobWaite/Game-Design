@@ -5,7 +5,9 @@ class Shopkeeper extends Humanoid {
         this.animationPlayer.addAnimation("itemPurchased", new Animation(this.spriteSheet, 0, 428, 98, 90, 7, [0.15], 4, false, false, true));
     };
 
-    update() {};
+    update() {
+        this.hitBox.updateHitBox();
+    };
 
     draw(ctx) {
         //this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x, this.y, 1.25);
