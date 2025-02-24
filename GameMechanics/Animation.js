@@ -52,4 +52,5 @@ class Animation {
     isDone() {
         return (this.elapsedTime >= this.totalTime);
     };
+    
 };

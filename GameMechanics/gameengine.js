@@ -14,7 +14,7 @@ class GameEngine {
         this.click = false;
         this.mouse = null;
         this.wheel = null;
-        this.mouseCoordinates= null;
+        this.mouseCoordinates= {x: 0, y:0};
         this.keys = new Map();
         this.mousePressed = false;
         this.debug = true;
@@ -40,7 +40,9 @@ class GameEngine {
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
-        
+        this.ctx.canvas.addEventListener("mousemove", e => {
+            this.mouseCoordinates = getXandY(e);
+        });
         this.ctx.canvas.addEventListener("mousedown", e => {
             if (this.debugging) {
                 console.log("MOUSE_DOWN", getXandY(e));
@@ -53,12 +55,8 @@ class GameEngine {
             if (this.debugging) {
                 console.log("CLICK", getXandY(e));
             }
-            this.mouseCoordinates = getXandY(e);
-            if(this.click) {
-                this.click = false;
-            } else {
-                this.click = true;
-            }
+            console.log("clicked");
+            this.click = true;
         });
 
         this.ctx.canvas.addEventListener("mouseup", e => {
@@ -105,8 +103,8 @@ class GameEngine {
                 this.entities[i].hitBox.drawHitBox(this.ctx);
             }
         }
+        this.camera.draw(this.ctx);
 
-         this.camera.draw(this.ctx);
     };
 
     update() {

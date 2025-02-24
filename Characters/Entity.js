@@ -35,4 +35,8 @@ class Entity {
    
     collision(collidingEntity) {};
 
+    toString() {
+        return "Entity " + this.x + " " + this.y;
+    }
+
 }

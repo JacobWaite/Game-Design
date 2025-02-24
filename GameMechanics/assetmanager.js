@@ -4,6 +4,10 @@ class AssetManager {
         this.errorCount = 0;
         this.cache = [];
         this.downloadQueue = [];
+
+
+
+        this.audioCache = {};
     };
 
     queueDownload(path) {
@@ -39,9 +43,73 @@ class AssetManager {
             this.cache[path] = img;
         }
     };
+    // AUDIO METHODS
+    // Preload an audio asset and store it in the audioCache.
+    queueSound(path) {
+        console.log("Queueing sound " + path);
+        const audio = new Audio(path);
+        audio.load();
+        this.audioCache[path] = audio;
+    }
 
+    getSound(path) {
+        return this.audioCache[path];
+    }
+
+    // Play a sound from the beginning.
+    playSound(path) {
+        const sound = this.getSound(path);
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play();
+        } else {
+            console.error("Sound not found: " + path);
+        }
+    }
+
+    // Pause the sound.
+    pauseSound(path) {
+        const sound = this.getSound(path);
+        if (sound) {
+            sound.pause();
+        }
+    }
+
+    // Reset the sound to the beginning.
+    resetSound(path) {
+        const sound = this.getSound(path);
+        if (sound) {
+            sound.pause();
+            sound.currentTime = 0;
+        }
+    }
+
+    // Play background music with auto-repeat.
+     playBackgroundMusic(path) {
+        const sound = this.getSound(path);
+        if (sound) {
+            sound.loop = true;
+            sound.currentTime = 0;
+            sound.play();
+        } else {
+            console.error("Background music not found: " + path);
+
+        }
+    }
+
+    // Stop background music and disable auto-repeat.
+    stopBackgroundMusic(path) {
+        const sound = this.getSound(path);
+        if (sound) {
+            sound.pause();
+            sound.loop = false;
+            sound.currentTime = 0;
+        }
+    }
     getAsset(path) {
         return this.cache[path];
     };
-};
+
+
+}
 
