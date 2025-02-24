@@ -10,6 +10,11 @@ class SceneManager {
         this.worldWidth = this.game.ctx.canvas.width * 2;
         this.worldHeight = this.game.ctx.canvas.height * 2;
 
+        //Initialize grid
+        const TILE_SIZE = 32;
+        const gridWidth = Math.ceil(this.worldWidth / TILE_SIZE);
+        const gridHeight = Math.ceil(this.worldHeight / TILE_SIZE);
+        this.game.grid = new Grid(gridWidth, gridHeight, TILE_SIZE);
         // Game state
         this.currentLevel = 1;
         this.gameOver = false;
@@ -126,6 +131,8 @@ class SceneManager {
         if (this.treeImage) {
             for (let pos of this.treePositions) {
                 this.game.addEntity(new Entity(this.game, pos.x, pos.y, this.treeImage, 40, 80, 20, 0, 2)); // Adjust the size (64x64) as needed
+                const gridPos = this.game.grid.worldToGrid(pos.x, pos.y);
+                this.game.grid.setWalkable(gridPos.x, gridPos.y, false);
             }
         } else {
             console.warn("Tree image not available!");
@@ -136,7 +143,7 @@ class SceneManager {
         if (!this.player) {
             console.log("No player found in entities");
         }
-
+        this.game.addEntity(new Goblin(gameEngine, 150,650, ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), 25, 45, 30, 10, 1.25, 100, 10, 20, 5,));
         this.game.addEntity(new Goblin(gameEngine, 200,650, ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), 25, 45, 30, 10, 1.25, 100, 10, 20, 5,));
 	    this.game.addEntity(new Shopkeeper(gameEngine,325,650, ASSET_MANAGER.getAsset("./Sprites/Wizard_Spritesheet.png"), 25, 65, 20, 15, 1.25, 100, 10, 20, 10));
 	    this.game.addEntity(new Skeleton(gameEngine,300,300, ASSET_MANAGER.getAsset("./Sprites/Skeleton_Attack.png"), 35, 75, 10, 20, 1.25, 100, 10, 20, 10));
@@ -262,11 +269,42 @@ class SceneManager {
 
     drawDebugInfo(ctx) {
         ctx.fillStyle = "white";
-        ctx.font = "12px Arial";
-        ctx.fillText(`FPS: ${Math.round(1/this.game.clockTick)}`, 10, ctx.canvas.height - 20);
-        ctx.fillText(`Entities: ${this.game.entities.length}`, 10, ctx.canvas.height - 40);
-        if (this.player) {
-            ctx.fillText(`Player Pos: (${Math.round(this.player.x)}, ${Math.round(this.player.y)})`, 10, ctx.canvas.height - 60);
-        }
+    ctx.font = "12px Arial";
+    let startY = ctx.canvas.height - 240;
+    let lineHeight = 20;
+
+    ctx.fillText(`FPS: ${Math.round(1/this.game.clockTick)}`, 10, startY += lineHeight);
+    ctx.fillText(`Entities: ${this.game.entities.length}`, 10, startY += lineHeight);
+    
+    if (this.player) {
+        ctx.fillText(`Player Pos: (${Math.round(this.player.x)}, ${Math.round(this.player.y)})`, 10, startY += lineHeight);
     }
+
+    const goblin = this.game.entities.find(e => e instanceof Goblin);
+    if (goblin) {
+        ctx.fillText(`Goblin Pos: (${Math.round(goblin.x)}, ${Math.round(goblin.y)})`, 10, startY += lineHeight);
+        ctx.fillText(`Goblin Moving: ${goblin.moving}`, 10, startY += lineHeight);
+        ctx.fillText(`Goblin Target: ${this.player ? `(${Math.round(this.player.x)}, ${Math.round(this.player.y)})` : 'None'}`, 10, startY += lineHeight);
+        ctx.fillText(`Goblin Path Length: ${goblin.path ? goblin.path.length : 0}`, 10, startY += lineHeight);
+        
+        if (goblin.path && goblin.path.length > 0) {
+            ctx.fillText(`Goblin Next Target: (${goblin.path[0].x}, ${goblin.path[0].y})`, 10, startY += lineHeight);
+        } else {
+            ctx.fillText(`Goblin Next Target: None`, 10, startY += lineHeight);
+        }
+
+        ctx.fillText(`A* Path: ${goblin.path === undefined ? 'Undefined' : JSON.stringify(goblin.path)}`, 10, startY += lineHeight);
+        
+        const goblinGridPos = this.game.grid.worldToGrid(goblin.x, goblin.y);
+        const paladinGridPos = this.game.grid.worldToGrid(this.player.x, this.player.y);
+        ctx.fillText(`Goblin Grid Pos: (${goblinGridPos.x}, ${goblinGridPos.y})`, 10, startY += lineHeight);
+        ctx.fillText(`Paladin Grid Pos: (${paladinGridPos.x}, ${paladinGridPos.y})`, 10, startY += lineHeight);
+        
+        // Check if Goblin and Paladin are on walkable tiles
+        const goblinNode = this.game.grid.getNode(goblinGridPos.x, goblinGridPos.y);
+        const paladinNode = this.game.grid.getNode(paladinGridPos.x, paladinGridPos.y);
+        ctx.fillText(`Goblin Walkable: ${goblinNode ? goblinNode.walkable : 'N/A'}`, 10, startY += lineHeight);
+        ctx.fillText(`Paladin Walkable: ${paladinNode ? paladinNode.walkable : 'N/A'}`, 10, startY += lineHeight);
+    }
+}
 }
