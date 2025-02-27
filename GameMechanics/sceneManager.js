@@ -238,29 +238,29 @@ class SceneManager {
             return;
         }
         //********** END: Start screen update code
-        //this.playergui.update(this.game.keys.get("e"));
-        let currentX = this.player.x - (this.game.ctx.canvas.width / 2 - this.player.width / 2);  // Character width and height, camera moving 
-        let currentY = this.player.y - (this.game.ctx.canvas.height / 2 -this.player.height / 2);
-        this.x = currentX;
-        this.y = currentY;
-        
-        if (currentX <= 0) {
-            this.x = 0;
-        } 
-        if (currentY <= 0) {
-            this.y = 0;
-        } 
-        if (currentX >= this.worldWidth) {
-            this.x = this.worldWidth;
-        } 
-        if (currentY >= this.worldHeight) {
-            this.y = this.worldHeight;
-        }
-        
-        
-    }
-    
 
+        // Scene manager update logic
+        if (this.player) {
+            // Center camera on player           
+            let currentX = this.player.x - (this.game.ctx.canvas.width / 2 - this.player.width / 2);  // Character width and height, camera moving 
+            let currentY = this.player.y - (this.game.ctx.canvas.height / 2 -this.player.height / 2);
+            this.x = currentX;
+            this.y = currentY;
+            
+            if (currentX <= 0) {
+                this.x = 0;
+            } 
+            if (currentY <= 0) {
+                this.y = 0;
+            } 
+            if (currentX >= this.worldWidth) {
+                this.x = this.worldWidth;
+            } 
+            if (currentY >= this.worldHeight) {
+                this.y = this.worldHeight;
+            }
+        }
+    }
 
     draw(ctx) {
         if (this.startScreenActive) {
