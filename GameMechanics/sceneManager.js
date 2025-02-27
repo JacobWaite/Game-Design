@@ -47,6 +47,8 @@ class SceneManager {
         //this.playergui = null;
         // Load background assets for Levels
         this.grassImage = ASSET_MANAGER.getAsset("./Sprites/Grass.png");
+        //Play Background Music
+
         if (!this.grassImage) {
             console.error("Grass image not found!");
         }
@@ -113,7 +115,7 @@ class SceneManager {
         this.game.ctx.canvas.addEventListener("mousemove", this.handleMouseMove);
         this.game.ctx.canvas.addEventListener("mousedown", this.handleMouseDown);
         //********** END: Start screen code
-
+        // Add this at the end of the SceneManager constructor
         const canvas = this.game.ctx.canvas;
         this.soundCheckbox = document.createElement("input");
         this.soundCheckbox.type = "checkbox";
@@ -158,7 +160,6 @@ class SceneManager {
         });
 
     }
-    
 
     loadLevel(level) {
   // this.game.entities = [];
@@ -189,6 +190,7 @@ class SceneManager {
         gameEngine.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 17, 40, 16, 24, 100, 20, 100, 10));
 
         // Reference the first paladin entity as the player
+
         if (this.grassImage) {
             console.log(this.x);
             console.log(this.y);
@@ -212,7 +214,7 @@ class SceneManager {
         } else {
             console.warn("Tree image not available!");
         }
-        this.game.addEntity(new Paladin(gameEngine, this.worldWidth / 2, this.worldHeight / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 75, 50, 15, 30, 1.25, 100, 20, 150, 10));
+        this.game.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 75, 50, 15, 30, 1.25, 100, 20, 150, 10));
 
         this.player = this.game.entities.find(entity => entity instanceof Paladin);
 <<<<<<< HEAD
@@ -252,7 +254,12 @@ class SceneManager {
     }
 
     update() {
-        
+        //********** START: Start screen update code
+        if (this.startScreenActive) {
+            // Do not update game scene while on start screen
+
+            return;
+        }
         //********** END: Start screen update code
         //this.playergui.update(this.game.keys.get("e"));
         let currentX = this.player.x - (this.game.ctx.canvas.width / 2 - this.player.width / 2);  // Character width and height, camera moving 
@@ -285,9 +292,45 @@ class SceneManager {
     }
     
 
+        // Scene manager update logic
+        if (this.player) {
+            // Center camera on player           
+            let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;  // Character width and height, camera moving 
+            let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
+            this.x = currentX;
+            this.y = currentY;
+
+            /*
+            if (currentX <= 0) {
+                this.x = 0;
+            } else {
+            this.x = currentX;
+            }
+            if (currentY <= 0) {
+                this.y = 0;
+            } else {
+                this.y = currentY;
+            }
+            if (currentX >= this.worldWidth) {
+                this.x = 0;
+            } else {
+                this.x = currentX;
+            }
+            if (currentY >= this.worldHeight) {
+                this.y = 0;
+            }
+            else {
+                this.y = currentY;
+            }
+            */
+        }
+    }
+
     draw(ctx) {
         if (this.startScreenActive) {
+
             // Draw start screen background
+
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             if (this.startBackground) {
                 ctx.drawImage(this.startBackground, 0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -304,7 +347,7 @@ class SceneManager {
                 ctx.fillText(btn.text, textX, textY);
             }
             return;
-        }/*
+        }
         if(this.goblin.dead) {
             ctx.fillStyle = "black";
             ctx.font = "64px Arial";
@@ -349,6 +392,7 @@ class SceneManager {
             }
         });
         */
+            
         // Draw HUD (e.g., top bar with health and stats)
         ctx.fillStyle = "rgba(49, 176, 123, 0.7)";
         ctx.fillRect(0, 0, ctx.canvas.width, 60);
