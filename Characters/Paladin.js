@@ -96,8 +96,8 @@ class Paladin extends Humanoid {
                         this.incrementStatValue("health", -1 * (otherHitbox.parent.getStatValue("strength") * this.game.clockTick));
 
                     }
-                    if(this.attacking && this.elapsedTime >= 0.55) {
-                        otherHitbox.parent.incrementStatValue("health",);
+                    if(this.attacking) {
+                        otherHitbox.parent.incrementStatValue("health", -1 * (this.getStatValue("strength") * this.game.clockTick));
                     }
                 } 
             }

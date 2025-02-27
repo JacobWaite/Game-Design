@@ -168,7 +168,7 @@ class SceneManager {
         } else {
             console.warn("Tree image not available!");
         }
-        this.game.addEntity(new Paladin(gameEngine, this.worldWidth / 2, this.worldHeight / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 75, 50, 15, 30, 1.25, 100, 20, 150, 10));
+        this.game.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 75, 50, 15, 30, 1.25, 100, 20, 150, 10));
 
         this.player = this.game.entities.find(entity => entity instanceof Paladin);
         //this.playergui = new playerGUI(this.player, this.game, ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
@@ -246,24 +246,13 @@ class SceneManager {
                 ctx.fillText(btn.text, textX, textY);
             }
             return;
-        }/*
+        }
         if(this.goblin.dead) {
             ctx.fillStyle = "black";
             ctx.font = "64px Arial";
             ctx.fillText("YOU WIN!!", 450, 375);
         }
-            */
-        // First, draw the background via Levels (grass and trees)
-        //this.levels.draw(ctx, this.x, this.y);
-
-        // Next, draw all game entities so that they appear on top of the background.
-        // (Make sure your game engine's main loop doesn't already call this, or adjust the draw order accordingly.)
-        /*this.game.entities.forEach(entity => {
-            if (entity.draw) {
-                entity.draw(ctx);
-            }
-        });
-        */
+            
         // Draw HUD (e.g., top bar with health and stats)
         ctx.fillStyle = "rgba(49, 176, 123, 0.7)";
         ctx.fillRect(0, 0, ctx.canvas.width, 60);
