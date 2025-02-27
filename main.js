@@ -12,6 +12,8 @@ ASSET_MANAGER.queueDownload("./Sprites/Grass.png");
 ASSET_MANAGER.queueDownload("./Sprites/Tree.png");
 ASSET_MANAGER.queueDownload("./Sprites/Background.png");
 ASSET_MANAGER.queueDownload("./Sprites/Gui.png");
+ASSET_MANAGER.queueDownload("./Sprites/AnimatedAutum.png");
+
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

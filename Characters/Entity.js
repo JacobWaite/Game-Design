@@ -30,7 +30,8 @@ class Entity {
      * @param {CanvasRenderingContext2D} ctx the context to draw to.
      */
     draw(ctx) {
-        ctx.drawImage(this.spriteSheet, this.x - this.game.camera.x, this.y - this.game.camera.y, this.spriteSheet.naturalWidth * this.scale, this.spriteSheet.naturalHeight * this.scale);
+
+        ctx.drawImage(this.spriteSheet, 0, 0, 64, 64, this.x - this.game.camera.x, this.y - this.game.camera.y, 64, 64);
     };
    
     collision(collidingEntity) {};

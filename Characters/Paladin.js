@@ -29,7 +29,6 @@ class Paladin extends Humanoid {
      * @inheritdoc
      */
     update() {
-        this.elapsedTime += this.game.clockTick;
         if(this.game.keys.get("g")){
             this.flash = !this.flash;
         }
@@ -39,7 +38,6 @@ class Paladin extends Humanoid {
             this.attacking = false;
             this.idle = !this.dead;
         }
-        this.elapsedTime += this.game.clockTick;
         let speedMultiplier = this.flash ? 3 : 1; 
         if(!this.dead) {
             this.moving = false;
@@ -79,28 +77,31 @@ class Paladin extends Humanoid {
             this.hitBox.updateHitBox();
             for(let i = 0; i < this.game.entities.length; i++) {
                 let otherHitbox = this.game.entities[i].hitBox;
-                if(this.hitBox.collide(otherHitbox) && !(otherHitbox.parent instanceof Humanoid)) {
-                    let direction = this.hitBox.collisionDirection(otherHitbox);
-                    if(direction == "right") {
-                        this.x = otherHitbox.left - 40; 
-                    } else if(direction == "left") {
-                        this.x = otherHitbox.right;
-                    } else if(direction == "top") {
-                        this.y = otherHitbox.bottom;
-                    } else if(direction == "bottom") {
-                        this.y = otherHitbox.top - this.hitBox.height;
+                this.colliding = this.hitBox.collide(otherHitbox);
+                this.collisionDirection = this.hitBox.collisionDirection(otherHitbox);
+                if(this.colliding && !(otherHitbox.parent instanceof Humanoid)) {
+                    console.log(`OtherHitBox: ${otherHitbox} X: ${this.x} Y: ${this.y} hitboxwidth: ${this.hitBox.width} height: ${this.hitBox.height}`);
+                    if(this.collisionDirection == "right") {
+                        this.x = otherHitbox.left - (this.hitBox.width + this.hitBox.xOffset); 
+                    } else if(this.collisionDirection == "left") {
+                        this.x = otherHitbox.right - this.hitBox.xOffset;
+                    } else if(this.collisionDirection == "top") {
+                        this.y = otherHitbox.bottom - this.hitBox.yOffset;
+                    } else if(this.collisionDirection == "bottom") {
+                        this.y = otherHitbox.top - (this.hitBox.height + this.hitBox.yOffset);
                     }
                 } else if(this.hitBox.collide(otherHitbox) && (otherHitbox.parent instanceof Goblin)) {
-                    if(otherHitbox.parent.attacking && this.elapsedTime >= 0.65) {
-                        this.elapsedTime = 0;
-                        this.incrementStatValue("health", -1);
+                    if(otherHitbox.parent.attacking) {
+                        //need to change so that damage is only applied upon attack completion
+                        this.incrementStatValue("health", -1 * (otherHitbox.parent.getStatValue("strength") * this.game.clockTick));
 
                     }
                     if(this.attacking && this.elapsedTime >= 0.55) {
-                        otherHitbox.parent.incrementStatValue("health",-10);
+                        otherHitbox.parent.incrementStatValue("health",);
                     }
-                }
+                } 
             }
+           
         } 
     };
     /*
@@ -117,6 +118,8 @@ class Paladin extends Humanoid {
             ctx.scale(-1, 1);
             ctx.translate(-(this.x - this.game.camera.x) * 2.12, 0);
         }
+        //ctx.strokeStyle = "blue"; //used for drawing the sprite frame
+        //ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 112 *1.25, 102 * 1.25);
         if(this.dead) {
             this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25); // this.x - this.camera.x 
         } else if(this.attacking) {

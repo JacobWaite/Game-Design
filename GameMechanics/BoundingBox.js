@@ -24,13 +24,13 @@ class BoundingBox{
 
     collisionDirection(otherHitbox) {
         let direction = "false";
-        if(this.left >= otherHitbox.right - 5 && this.left <= otherHitbox.right + 5) {
+        if(this.left >= otherHitbox.right -5  && this.left <= otherHitbox.right + 5) {
             direction = "left";
-        } else if(this.right >= otherHitbox.left - 5 && this.right >= otherHitbox.left +5) {
+        } else if(this.right >= otherHitbox.left - 5 && this.right <= otherHitbox.left + 5) {
             direction = "right";
         } else if (this.top >= otherHitbox.bottom - 5 && this.top <= otherHitbox.bottom + 5) {
             direction = "top";
-        } else if (this.bottom >= otherHitbox.top-5 && this.bottom <= otherHitbox.top +5) {
+        } else if (this.bottom >= otherHitbox.top-5 && this.bottom <= otherHitbox.top + 5) {
             direction = "bottom";
         }
         return direction;

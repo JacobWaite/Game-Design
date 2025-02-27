@@ -25,20 +25,20 @@ class Humanoid extends Entity{
         // a map that stores the value of the stat as well as the number of stat points, stat points can be increased by the player and represent a percent increase of the original stat value
         // this allows the player to upgrade stats throughout the game and also allows devs to easily change enemy strength
         this.statPoints = new Map();
-        this.statPoints.set("health", health);
-        this.statPoints.set("strength", strength);
-        this.statPoints.set("speed", speed);
-        this.statPoints.set("intelligence", [intelligence,0]);
+        this.statPoints.set("health", [health, 1]);
+        this.statPoints.set("strength", [strength, 1]);
+        this.statPoints.set("speed", [speed, 1]);
+        this.statPoints.set("intelligence", [intelligence,1]);
     }
     /**
      * sets the value of the given stat given that the value is greater than zero.
      * @param {string} statName the name of the stat to set.
      * @param {number} statValue the value to set the stat to, must be greater than zero.
      */
-    incrementStatValue(statName, statValue) {
-        let current = this.statPoints.get(statName);
-        if(current > 0) {
-            this.statPoints.set(statName, current + statValue);
+    incrementStatValue(statName, value) {
+        let stats = this.statPoints.get(statName);
+        if(stats[0] > 0) {
+            this.statPoints.set(statName, [stats[0]+value, stats[1]]);
         } else {
             console.log("Value out of range for " + statName);
         }
@@ -48,7 +48,10 @@ class Humanoid extends Entity{
      * @param {"string"} statName the stat to upgrade
      */
     addStatPoint(statName) {
-       
+        let stats = this.statPoints.get(statName);
+        console.log(stats);
+        this.statPoints.set(statName,[stats[0], stats[1]+1]);
+        console.log(this.statPoints.get(statName));
     }
     /**
      * returns the value of a given stat. 
@@ -57,7 +60,9 @@ class Humanoid extends Entity{
      */
     getStatValue(statName) {
         
-        return this.statPoints.get(statName);
+        let stats = this.statPoints.get(statName);
+        console.log(stats[0]);
+        return stats[0];
     }
     /**
      * returns the stat points of given stat, meant to be used to display to a player their stat points. 
@@ -65,7 +70,9 @@ class Humanoid extends Entity{
      * @returns the number of stat points the given stat contains. 
      */
     getStatPoints(statName) {
-        return this.statPoints.get(statName);
+        let stats = this.statPoints.get(statName);
+        console.log(stats[1]);
+        return stats[1];
     }
 
 }
