@@ -232,6 +232,7 @@ class SceneManager {
             if (currentY >= this.worldHeight) {
                 this.y = this.worldHeight;
             }
+        }
     }
 
     draw(ctx) {
