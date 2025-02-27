@@ -145,35 +145,7 @@ class SceneManager {
     }
 
     loadLevel(level) {
-  // this.game.entities = [];
-        // this.x = 0;
-
-        // for (var i = 0; i < level.length; i++) {
-
-        // }
-        if (this.grassImage) {
-            for (let x = 0; x < this.worldWidth; x += this.grassImage.width - 1) {
-                for (let y = 0; y < this.worldHeight * 2; y += this.grassImage.height - 1) {
-                    // ctx.drawImage(this.game.background, x - this.x, y - this.y);
-                    this.game.addBackground(new Background(this.game, x, y, this.grassImage));
-                }
-            }
-        } else {
-            console.warn("Background image not available!");
-        }
-
-        if (this.treeImage) {
-            for (let pos of this.treePositions) {
-                this.game.addEntity(new Entity(this.game, pos.x, pos.y, this.treeImage, 64, 64, 0, 0)); // Adjust the size (64x64) as needed
-            }
-        } else {
-            console.warn("Tree image not available!");
-        }
-
-        gameEngine.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 17, 40, 16, 24, 100, 20, 100, 10));
-
-        // Reference the first paladin entity as the player
-
+  
         if (this.grassImage) {
             console.log(this.x);
             console.log(this.y);
