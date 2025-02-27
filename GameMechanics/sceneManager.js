@@ -215,35 +215,23 @@ class SceneManager {
         // Scene manager update logic
         if (this.player) {
             // Center camera on player           
-            let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;  // Character width and height, camera moving 
-            let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
+            let currentX = this.player.x - (this.game.ctx.canvas.width / 2 - this.player.width / 2);  // Character width and height, camera moving 
+            let currentY = this.player.y - (this.game.ctx.canvas.height / 2 -this.player.height / 2);
             this.x = currentX;
             this.y = currentY;
-
-            /*
+            
             if (currentX <= 0) {
                 this.x = 0;
-            } else {
-            this.x = currentX;
-            }
+            } 
             if (currentY <= 0) {
                 this.y = 0;
-            } else {
-                this.y = currentY;
-            }
+            } 
             if (currentX >= this.worldWidth) {
-                this.x = 0;
-            } else {
-                this.x = currentX;
-            }
+                this.x = this.worldWidth;
+            } 
             if (currentY >= this.worldHeight) {
-                this.y = 0;
+                this.y = this.worldHeight;
             }
-            else {
-                this.y = currentY;
-            }
-            */
-        }
     }
 
     draw(ctx) {
