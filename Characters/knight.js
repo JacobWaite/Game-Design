@@ -2,19 +2,21 @@
  * A class to represent a paladin playable character.
  * @implements {Humanoid}
  */
-class Paladin extends Humanoid {
+class knight extends Humanoid {
     /**
      * Instantiates a Paladin Object. 
      * @inheritdoc
-     */
+     */        
+
     constructor(game, x, y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed, intelligence)  {
-        super(game,x,y,spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale,health,strength,speed,intelligence);
-        this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 209, 112, 102, 7, [0.05,0.05,0.05,0.07,0.1,0.1,0.25], 0, true, false, false));
-        this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 0, 97.5, 118, 102, 8, [0.15], 6.7, false, false, true));
-        this.animationPlayer.addAnimation("flash", new Animation(this.spriteSheet, 0, 97.5, 118, 102, 8, [0.05], 6.7, false, false, true));
-        this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet, 0, 0, 118, 102, 11, [0.25], 2, false, false, true));
-        this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet, -1, 315, 114, 102, 8, [0.25], 2, false, false, true));
+        super(game,x,y,spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale,health,strength,speed,intelligence); 
+        this.animationPlayer.addAnimation("runright", new Animation(this.spriteSheet[0], 0, 0, 128, 64, 8, [0.1], 0, false, false, true));
+        this.animationPlayer.addAnimation("runleft", new Animation(this.spriteSheet[2], 0, 0, 128, 64, 8, [0.1], 0, false, true, true));
+        this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet[1], 0, 0, 128, 64, 8, [0.15], 0, false, false, true));
+        this.animationPlayer.addAnimation("attackright", new Animation(this.spriteSheet[3], 0, 0, 128, 64, 10, [0.09], 0, false, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
+        this.animationPlayer.addAnimation("attackleft", new Animation(this.spriteSheet[3], 512, 128, 128, 64, 10, [0.1], 0, false, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.experienceLevel = 0;
+        this.availableStatPoints = 5;
         this.flash = false;
         this.dead = false;
         this.moving = false;
@@ -43,24 +45,24 @@ class Paladin extends Humanoid {
             this.moving = false;
             this.attacking = false;
             
-            if(this.animationPlayer.currentlyPlaying && this.animationPlayer.currentAnimation == "attack") {
+            if(this.animationPlayer.currentlyPlaying && (this.animationPlayer.currentAnimation == "attackleft" || this.animationPlayer.currentAnimation == "attackright")) {
                 this.attacking = true;
             }
             
-            if(this.game.keys.get("w")){
+            if(this.game.keys.get("w") && !this.attacking){
                 this.y -= this.game.clockTick * this.getStatValue("speed") * speedMultiplier; 
                 this.moving = true;
             }
-            if(this.game.keys.get("a")){
+            if(this.game.keys.get("a") && !this.attacking){
                 this.x -= this.game.clockTick * this.getStatValue("speed") * speedMultiplier; 
                 this.moving = true;
                 this.facing = -1;
             }
-            if(this.game.keys.get("s")){
+            if(this.game.keys.get("s") && !this.attacking){
                 this.y +=this.game.clockTick * this.getStatValue("speed") * speedMultiplier; 
                 this.moving = true;
             }   
-            if(this.game.keys.get("d")){
+            if(this.game.keys.get("d") && !this.attacking){
                 this.x += this.game.clockTick * this.getStatValue("speed") * speedMultiplier;
                 this.moving = true;
                 this.facing = 1;
@@ -112,25 +114,21 @@ class Paladin extends Humanoid {
      * @inheritdoc 
      */
     draw(ctx) {
-        ctx.save();
-        if (this.facing == -1) {
-            ctx.scale(-1, 1);
-            ctx.translate(-(this.x - this.game.camera.x) * 2.12, 0);
-        }
-        ctx.strokeStyle = "blue"; //used for drawing the sprite frame
-        ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 112 *1.25, 102 * 1.25);
-        if(this.dead) {
-            this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25); // this.x - this.camera.x 
-        } else if(this.attacking) {
-            this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
-        } else if(this.moving && !this.flash) {
-            this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, 1.25);
+       
+        //ctx.strokeStyle = "blue"; //used for drawing the sprite frame
+        //ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, 112 *1.25, 102 * 1.25);
+        if(this.attacking && this.facing == 1) {
+            this.animationPlayer.getAnimation("attackright").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 8);
 
-        } else if(this.moving && this.flash){
-            this.animationPlayer.playAnimation("flash", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, 1.25);
+        } else if(this.attacking && this.facing == -1) {
+            this.animationPlayer.getAnimation("attackleft").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 4);
+        }else if(this.moving && this.facing == 1) {
+            this.animationPlayer.getAnimation("runright").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 2);
+
+        } else if (this.moving && this.facing == -1){
+            this.animationPlayer.getAnimation("runleft").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 2);
         } else {
-            this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, 1.25);
+            this.animationPlayer.getAnimation("idle").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 2);
         }
-        ctx.restore();
     }
-}
+} 

@@ -27,7 +27,7 @@ class background {
     class tree extends Entity {
         constructor(game, x, y, spriteSheet, width, height, xSpriteOffset,ySpriteOffset, scale) {
             super(game,x,y,spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale);
-    
+            console.log("tree created");
         }
     
         update() {
@@ -36,6 +36,7 @@ class background {
     
         draw(ctx) {
             // If you want camera offset
-            ctx.drawImage(this.spriteSheet, this.x - this.game.camera.x, this.y - this.game.camera.y);
+            ctx.drawImage(this.spriteSheet, 0, 0, 128, 160,this.x - this.game.camera.x, this.y - this.game.camera.y, 128, 160);
+
         }
     }

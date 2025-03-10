@@ -8,21 +8,27 @@
     <script type="text/javascript" src="./GameMechanics/AStarNode.js"></script>
     <script type="text/javascript" src="./GameMechanics/assetmanager.js"></script>
     <script type="text/javascript" src="./GameMechanics/timer.js"></script>
+    <script type="text/javascript" src="./GameMechanics/button.js"></script>
+    <script type="text/javascript" src="./Characters/playerGUI.js"></script>
 
+    <script type="text/javascript" src="./firstLevel.js"></script>
     <script type="text/javascript" src="./GameMechanics/sceneManager.js"></script>
     <script type="text/javascript" src="./GameMechanics/gameengine.js"></script>
     <script type="text/javascript" src="./GameMechanics/util.js"></script>
     <script type="text/javascript" src="./GameMechanics/SpriteMap.js"></script>
-    <script type="text/javascript" src="./GameMechanics/Levels.js"></script>
-    <script type="text/javascript" src="./GameMechanics/LevelStorage.js"></script>
     <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript" src="./Characters/Entity.js"></script>
     <script type="text/javascript" src="./Characters/Humanoid.js"></script>
     <script type="text/javascript" src="./Characters/background.js"></script>
+    <script type="text/javascript" src="./Characters/grass.js"></script>
+    <script type="text/javascript" src="./Characters/stone.js"></script>
+    <script type="text/javascript" src="./GameMechanics/levels.js"></script>
+    <script type="text/javascript" src="./GameMechanics/levelStorage.js"></script>
     <script type="text/javascript" src="./GameMechanics/Animation.js"></script>
     <script type="text/javascript" src="./GameMechanics/AnimationPlayer.js"></script>
     <script type="text/javascript" src="./GameMechanics/BoundingBox.js"></script>
-    <script type="text/javascript" src="./Characters/Paladin.js"></script>
+    <script type="text/javascript" src="./Characters/Paladin.js"></script>    
+    <script type="text/javascript" src="./Characters/knight.js"></script>
     <script type="text/javascript" src="./Characters/Goblin.js"></script>
     <script type="text/javascript" src="./Characters/Shopkeeper.js"></script>
     <script type="text/javascript" src="./Characters/Skeleton.js"></script>
@@ -30,7 +36,9 @@
 </head>
 <body>
     <canvas id="gameWorld" width="1280" height="720" style="background: white; border: 1px solid black" tabindex="0" autofocus></canvas>
-
+   <style>
+        canvas { image-rendering: pixelated; }
+   </style>
     <div>
         <br />
         <input type="checkbox" id="debug"> Debug </input>

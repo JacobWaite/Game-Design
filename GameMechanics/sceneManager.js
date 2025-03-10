@@ -6,8 +6,8 @@ class SceneManager {
         // Camera / world positioning
         this.x = 0;
         this.y = 0;
-        this.worldWidth = this.game.ctx.canvas.width * 2;
-        this.worldHeight = this.game.ctx.canvas.height * 2;
+        this.worldWidth = this.game.ctx.canvas.width * 4;
+        this.worldHeight = this.game.ctx.canvas.height * 4;
         this.currentLevel = 1;
         this.gameOver = false;
         this.paused = false;
@@ -17,26 +17,20 @@ class SceneManager {
         this.goblin = null;
 
         // Load background assets
-        this.grassImage = ASSET_MANAGER.getAsset("./Sprites/Grass.png");
         if (!this.grassImage) {
             console.error("Grass image not found!");
         }
-        this.treeImage = ASSET_MANAGER.getAsset("./Sprites/Tree.png");
+        this.treeImage = ASSET_MANAGER.getAsset("./Sprites/TX_Plant.png");
 
         // Instantiate the Levels class (which loads the level’s tree entities)
         this.levels = new Levels(this.game, this.grassImage, this.treeImage, LevelStorage);
 
         // Now add your game entities:
         // Add the player character (Paladin)
-        this.game.addEntity(new Paladin(
-            this.game,
-            this.game.ctx.canvas.width / 2,
-            this.game.ctx.canvas.height / 2,
-            ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"),
-            75, 50, -15, 30, 1.25, 100, 20, 150, 10
-        ));
+        
         // Set reference to the player for camera tracking
-        this.player = this.game.entities.find(e => e instanceof Paladin);
+        this.player = this.game.entities.find(e => e instanceof knight);
+        this.playergui = new playerGUI(this.player,this.game,ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
 
         // // Add a Goblin enemy
         // this.game.addEntity(new Goblin(
@@ -181,9 +175,9 @@ class SceneManager {
     update() {
         
         //********** END: Start screen update code
-        //this.playergui.update(this.game.keys.get("e"));
-        let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;  // Character width and height, camera moving 
-        let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
+        this.playergui.update(this.game.keys.get("e"));
+        let currentX = this.player.x - this.game.ctx.canvas.width / 2 ;  // Character width and height, camera moving 
+        let currentY = this.player.y - this.game.ctx.canvas.height / 2;
         this.x = currentX;
         this.y = currentY;
         
@@ -223,36 +217,20 @@ class SceneManager {
             }
             return;
         }
-/*
-        // Draw an infinite grass background.
-        ctx.save();
-        ctx.translate(-this.x % this.grassImage.width, -this.y % this.grassImage.height);
-        const tilesX = Math.ceil(ctx.canvas.width / this.grassImage.width) + 2;
-        const tilesY = Math.ceil(ctx.canvas.height / this.grassImage.height) + 2;
-        for (let x = -1; x < tilesX; x++) {
-            for (let y = -1; y < tilesY; y++) {
-                ctx.drawImage(
-                    this.grassImage,
-                    x * this.grassImage.width,
-                    y * this.grassImage.height
-                );
-            }
-        }
-        ctx.restore();
-*/
+
 
         // Draw a HUD (for example, top bar with player stats)
         ctx.fillStyle = "rgba(49, 176, 123, 0.7)";
         ctx.fillRect(0, 0, ctx.canvas.width, 60);
-
         if (this.player) {
             this.drawHealthBar(ctx, 10, 10, 200, 20);
+            this.playergui.draw(ctx);
             ctx.fillStyle = "white";
             ctx.font = "16px Arial";
             ctx.fillText(`Level ${this.player.experienceLevel}`, 10, 50);
             ctx.fillText(`Attack: ${this.player.getStatValue("strength")}`, 100, 50);
             ctx.fillText(`Speed: ${this.player.getStatValue("speed")}`, 250, 50);
-            ctx.fillText(`Defense: ${this.player.getStatValue("intelligence")}`, 400, 50);
+            ctx.fillText(`Defense: ${this.player.getStatValue("stealth")}`, 400, 50);
         }
 
         // Draw debug information if enabled.

@@ -6,11 +6,10 @@ class AnimationPlayer {
         this.currentlyPlaying = false;
     };
 
-    playAnimation(animationName, gameTick, ctx, x, y, scale) {
-        
-        this.animations.get(animationName).drawFrame(gameTick, ctx, x, y, scale);
+    getAnimation(animationName) {
         this.currentAnimation = animationName;
-        this.currentlyPlaying = !this.animations.get(animationName).isDone();
+        this.currentlyPlaying = !this.animations.get(animationName).finished; 
+        return this.animations.get(animationName);
     };
 
     addAnimation(name, animation) {

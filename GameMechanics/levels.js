@@ -9,7 +9,8 @@ class Levels {
         this.game = game;
         this.grassImage = grassImage;
         this.treeImage = treeImage;
-        this.levels = levelStorage.getLevels();  // Get level data from LevelStorage.
+        this.levels = levelStorage.getLevels();
+        this.level1 = this.levels[0];
         this.currentLevelIndex = 0;
         this.loadCurrentLevel();
     }
@@ -18,24 +19,60 @@ class Levels {
      * Loads the current level by clearing existing entities and adding trees.
      */
     loadCurrentLevel() {
-        this.game.entities = [];
-
-        const level = this.levels[this.currentLevelIndex];
-
-        if (level.trees) {
-            for (var i = 0; i < level.trees.length; i++) {
-                let levelTree = level.trees[i];
-                this.game.addEntity(new tree(this.game, levelTree.x, levelTree.y, this.treeImage, 50, 50, 0, 0, 1));
-
-                // game, x, y, spriteSheet, width, height, xSpriteOffset,ySpriteOffset, scale
-            }
-        }
-
-        if (this.grassImage) {
-            for (let x = 0; x < level.grass.x; x += this.grassImage.width - 1) {
-                for (let y = 0; y < level.grass.y; y += this.grassImage.height - 1) {
-                    this.game.addBackground(new background(this.game, x, y, this.grassImage));
+        let x = 0;
+        let y = 0;
+        
+        
+        if (this.level1 != null) {
+            
+            for(let i = 0; i < this.level1.grass.data.length; i++) {
+                if(i % this.level1.grass.width == 0) {
+                    y += 31;
+                    x = 0;
                 }
+                x += 31;
+                for(let j = 0; j < this.level1.tilesets.length; j++) {
+                    if(this.level1.grass.data[i] < (this.level1.tilesets[j].firstgid + this.level1.tilesets[j].setSize)){
+                        let imagey = Math.floor((this.level1.grass.data[i] - this.level1.tilesets[j].firstgid) / this.level1.tilesets[j].columns);
+                        let imagex =  (this.level1.grass.data[i] - this.level1.tilesets[j].firstgid) - (imagey * this.level1.tilesets[j].columns);
+                        this.game.addBackground(new grass(this.game, x, y, ASSET_MANAGER.getAsset(this.level1.tilesets[j].image), imagex * 32, imagey * 32));
+                        
+                        //console.log(`Imagex: ${imagex} Imagey: ${imagey} textureID: ${this.level1.grass.data[i] } ImageX pixels: ${imagex * 32} Imagey pixels: ${imagey * 32} True: ${this.level1.grass.data[i] < (this.level1.tilesets[j].firstgid + this.level1.tilesets[j].setSize)}`);
+                        break;
+                   }
+                }      
+            }
+            x = 0;
+            y = 0;
+            for(let i = 0; i < this.level1.entities.data.length; i++) {
+                if(i % this.level1.entities.width == 0) {
+                    y += 31;
+                    x = 0;
+                }
+                x += 31;
+                if(this.level1.entities.data[i] > 0) {
+                    for(let j = 0; j < this.level1.tilesets.length; j++) {
+                        if(this.level1.entities.data[i] < (this.level1.tilesets[j].firstgid + this.level1.tilesets[j].setSize)){
+                            let imagey = Math.floor((this.level1.entities.data[i] - this.level1.tilesets[j].firstgid) / this.level1.tilesets[j].columns);
+                            let imagex =  (this.level1.entities.data[i] - this.level1.tilesets[j].firstgid) - (imagey * this.level1.tilesets[j].columns);
+                            this.game.addEntity(new stone(this.game, x, y, ASSET_MANAGER.getAsset(this.level1.tilesets[j].image), imagex * 32, imagey * 32, 32,8, 0, 0, 1));
+
+                            //console.log(`Imagex: ${imagex} Imagey: ${imagey} textureID: ${this.level1.entities.data[i] } ImageX pixels: ${imagex * 32} Imagey pixels: ${imagey * 32} Image: ${this.level1.tilesets[j].image}`);
+                            break;
+                        }
+                    }
+                }
+                
+            }
+            this.game.addEntity(new knight(
+                this.game,
+                this.game.ctx.canvas.width / 2,
+                this.game.ctx.canvas.height / 2,
+                [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png")],
+                20, 35, 55, 25, 1, 100, 20, 150, 10
+            ));
+            for(let i = 0; i < this.level1.trees.length; i++) {
+                this.game.addEntity(new tree(this.game, this.level1.trees[i].x, this.level1.trees[i].y, this.treeImage, 6, 12, 80, 120, 1));
             }
         }
             
@@ -49,3 +86,4 @@ class Levels {
         this.loadCurrentLevel();
     }
 }
+

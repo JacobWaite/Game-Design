@@ -1,38 +1,43 @@
 class button {
-    constructor(game,x,y,width,height) {
-        Object.assign(this, {game, x, y, width, height});
-        this.mouseX = this.game.mouseCoordinates.x;
-        this.mouseY = this.game.mouseCoordinates.y;
-        this.disabled = true;
+    constructor(parent,name,x,y,width,height) {
+        Object.assign(this, {parent, name, x, y, width, height});
+        this.mouseX = this.parent.game.mouseCoordinates.x;
+        this.mouseY = this.parent.game.mouseCoordinates.y;
     }
 
-    update(x,y) {
-        this.x = x;
-        this.y = y;
+    update() {
+        this.mouseX = this.parent.game.mouseCoordinates.x;
+        this.mouseY = this.parent.game.mouseCoordinates.y;
+        
     }
 
-    hovering() {
-        console.log("hovering called");
-        if(!this.disabled) {
-            if (this.mouseX >= this.x && this.mouseX <= this.x + this.width &&
-                this.mouseY >= this.y && this.mouseY <= this.y + this.height) {
-                console.log(this.mouseX);
-                return true;
-            }
+    hovering() { 
+        //if(this.disabled) {
+        //console.log(`${this.mouseX} ${this.mouseY} this.x: ${this.x} this.y: ${this.y}`);
+        if (this.mouseX >= this.x && this.mouseX <= this.x + this.width &&
+            this.mouseY >= this.y && this.mouseY <= this.y + this.height) {
+            //console.log(this.mouseX);
+            return true;
         }
+     //   }
         return false;
     }
 
     clicked() {
-        if(!this.disabled && this.game.clicked) {
-            return this.hovering();
+        if(this.hovering()) {
+            //console.log(`button clicked: ${this.hovering()}`);
+            this.parent.onclick(this.name);
         }
-        return false;
+        
     }
 
     draw(ctx) {
         ctx.strokeStyle = "green";
-        ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y, this.width, this.height);
+        //console.log(this.name);
+        if(this.hovering()) {
+            ctx.strokeStyle = "red";
+        }
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 
     

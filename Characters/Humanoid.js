@@ -28,7 +28,7 @@ class Humanoid extends Entity{
         this.statPoints.set("health", [health, 1]);
         this.statPoints.set("strength", [strength, 1]);
         this.statPoints.set("speed", [speed, 1]);
-        this.statPoints.set("intelligence", [intelligence,1]);
+        this.statPoints.set("stealth", [intelligence,1]);
     }
     /**
      * sets the value of the given stat given that the value is greater than zero.
@@ -49,9 +49,7 @@ class Humanoid extends Entity{
      */
     addStatPoint(statName) {
         let stats = this.statPoints.get(statName);
-        console.log(stats);
         this.statPoints.set(statName,[stats[0], stats[1]+1]);
-        console.log(this.statPoints.get(statName));
     }
     /**
      * returns the value of a given stat. 
@@ -61,7 +59,6 @@ class Humanoid extends Entity{
     getStatValue(statName) {
         
         let stats = this.statPoints.get(statName);
-        console.log(stats[0]);
         return stats[0];
     }
     /**
@@ -71,7 +68,7 @@ class Humanoid extends Entity{
      */
     getStatPoints(statName) {
         let stats = this.statPoints.get(statName);
-        console.log(stats[1]);
+        //console.log(stats);
         return stats[1];
     }
 

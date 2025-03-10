@@ -1,41 +1,52 @@
 class playerGUI {
     constructor(player, game, sprite) {
         Object.assign(this, {player, game, sprite});
-        this.x = this.player.x;
-        this.y = this.player.y;
+        this.x = this.game.ctx.canvas.width/2 ;
+        this.y = this.game.ctx.canvas.height/2;
+        this.statpoint = ASSET_MANAGER.getAsset("./Sprites/Statpoint.png");
+        this.sprite.setAttribute('style','opacity:0.5');
         this.visible = false;
-        this.speedButton = new button(game, this.x - 119, this.y + 12, 20, 20);
+        this.buttons = [new button(this, "health", this.x - 143 , this.y - 108, 20, 20), new button(this, "speed", this.x - 143, this.y - 58, 20, 20),  
+                        new button(this, "strength", this.x - 143, this.y - 5, 20, 20), new button(this, "stealth", this.x - 143, this.y + 37, 20, 20)];
+
     }
 
     draw(ctx) {
         if(this.visible) {
             ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(this.sprite, (this.x - this.game.camera.x) - ((this.sprite.naturalWidth * 2) / 2), (this.y - this.game.camera.y) - (this.sprite.naturalHeight * 1.25), this.sprite.naturalWidth * 3, this.sprite.naturalHeight * 3);
-            ctx.fillStyle = '#44261e';
-            ctx.fillRect((this.x - this.sprite.naturalWidth / 1.7) + (this.sprite.naturalWidth / 16), this.y - this.sprite.naturalHeight / 3.6, this.sprite.naturalWidth / 20, this.sprite.naturalHeight / 42);
-            this.speedButton.draw(ctx);
+            ctx.drawImage(this.sprite, this.x - this.sprite.naturalWidth, this.y - this.sprite.naturalHeight/2, this.sprite.naturalWidth * 3, this.sprite.naturalHeight * 3);
+
+            this.buttons.forEach(element =>{
+                element.draw(ctx);
+                let statAmount = this.player.getStatPoints(element.name);
+                for(let i =1; i < statAmount; i ++) {
+                    ctx.drawImage(this.statpoint, element.x + 42 +((i-1) * this.statpoint.naturalWidth), element.y -11.5, this.statpoint.naturalWidth * 3, this.statpoint.naturalHeight * 3);
+                }
+            });
         }
-
-
     }
 
     update(visible){
-        this.speedButton.update(this.x - 119, this.y + 12);
+        this.buttons.forEach(element => {
+            element.update();
+        });
         this.visible = visible;
         if(this.visible) {
             this.visible = true;
-            this.speedButton.disabled = false;
-            this.x = this.player.x;
-            this.y = this.player.y;
         } else {
             this.visible = false;
         }
 
-        if(this.speedButton.clicked()) {
-            this.player.addStatPoint("speed");
-            console.log("increase");
-        }
+        
+        
     }
 
+    onclick(button) {
+        if(this.player.availableStatPoints > 0) {
+            console.log(button);
+            this.player.addStatPoint(button);
+            this.player.availableStatPoints -= 1;
 
+        }
+    }
 }

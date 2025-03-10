@@ -1,5 +1,0 @@
-class attackState {
-    constructor(parent,) {
-
-    }
-}
