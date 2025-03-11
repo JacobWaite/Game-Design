@@ -60,6 +60,7 @@ class Paladin extends Humanoid {
             }
             if(this.game.keys.get("j")){
                 this.attacking = !this.attacking;
+                ASSET_MANAGER.playSound("./Sprites/Music/attack.mp3");
                 this.idle = !this.attacking;
                 
             }
