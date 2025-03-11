@@ -125,6 +125,8 @@ class DarkKnight extends Humanoid{
 		this.animationPlayer.getAnimation("death").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
 	} else if (this.attacking) {
 		this.animationPlayer.getAnimation("attack").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+		ASSET_MANAGER.playSound("./Sprites/Music/darkKnightAttack.mp3");
+
 	} else if (this.moving) {
 		this.animationPlayer.getAnimation("walk").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
 	} else {

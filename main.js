@@ -25,6 +25,10 @@ ASSET_MANAGER.queueDownload("./Sprites/TX_Tileset_Wall.png");
 
 ASSET_MANAGER.queueSound("./Sprites/Music/backgroundMusic.mp3");
 ASSET_MANAGER.queueSound("./Sprites/Music/attack.mp3");
+ASSET_MANAGER.queueSound("./Sprites/Music/goblinBonk.mp3");
+ASSET_MANAGER.queueSound("./Sprites/Music/darkKnightAttack.mp3");
+
+
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

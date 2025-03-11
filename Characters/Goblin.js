@@ -149,6 +149,7 @@ draw(ctx) {
     } else if (this.attacking) {
         // const attackAnim = this.animationPlayer.animations["attack"];
         this.animationPlayer.getAnimation("attack").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+        ASSET_MANAGER.playSound("./Sprites/Music/goblinBonk.mp3");
 
         //Attack lands at the end of the animation
         // if (attackAnim.currentFrame === attackAnim.totalFrames - 1 && !this.attackFinished) {
