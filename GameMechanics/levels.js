@@ -1,13 +1,11 @@
 class Levels {
     /**
      * @param {Object} game - Your game engine instance.
-     * @param {HTMLImageElement} grassImage - The grass image asset.
      * @param {HTMLImageElement} treeImage - The tree image asset.
      * @param {LevelStorage} levelStorage - The LevelStorage instance holding level definitions.
      */
-    constructor(game, grassImage, treeImage, levelStorage) {
+    constructor(game, treeImage, levelStorage) {
         this.game = game;
-        this.grassImage = grassImage;
         this.treeImage = treeImage;
         this.levels = levelStorage.getLevels();
         this.level1 = this.levels[0];
@@ -21,8 +19,6 @@ class Levels {
     loadCurrentLevel() {
         let x = 0;
         let y = 0;
-        
-        
         if (this.level1 != null) {
             
             for(let i = 0; i < this.level1.grass.data.length; i++) {
@@ -64,13 +60,7 @@ class Levels {
                 }
                 
             }
-            this.game.addEntity(new knight(
-                this.game,
-                this.game.ctx.canvas.width / 2,
-                this.game.ctx.canvas.height / 2,
-                [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png")],
-                20, 35, 55, 25, 1, 100, 20, 150, 10
-            ));
+            
             for(let i = 0; i < this.level1.trees.length; i++) {
                 this.game.addEntity(new tree(this.game, this.level1.trees[i].x, this.level1.trees[i].y, this.treeImage, 6, 12, 80, 120, 1));
             }

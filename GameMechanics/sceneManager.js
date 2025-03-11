@@ -16,31 +16,55 @@ class SceneManager {
         this.showStats = false;
         this.goblin = null;
 
-        // Load background assets
-        if (!this.grassImage) {
-            console.error("Grass image not found!");
-        }
+        //Initialize grid
+        const TILE_SIZE = 32;
+        const gridWidth = Math.ceil(this.worldWidth / TILE_SIZE);
+        const gridHeight = Math.ceil(this.worldHeight / TILE_SIZE);
+        this.game.grid = new Grid(gridWidth, gridHeight, TILE_SIZE);
+
+
         this.treeImage = ASSET_MANAGER.getAsset("./Sprites/TX_Plant.png");
 
         // Instantiate the Levels class (which loads the level’s tree entities)
-        this.levels = new Levels(this.game, this.grassImage, this.treeImage, LevelStorage);
+        this.levels = new Levels(this.game,this.treeImage, LevelStorage);
 
         // Now add your game entities:
         // Add the player character (Paladin)
-        
+        this.game.addEntity(new Paladin(
+            this.game,
+            this.game.ctx.canvas.width / 2,
+            this.game.ctx.canvas.height / 2,
+            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png")],
+            20, 35, 55, 25, 1, 100, 20, 150, 10
+        ));
         // Set reference to the player for camera tracking
-        this.player = this.game.entities.find(e => e instanceof knight);
+        this.player = this.game.entities.find(e => e instanceof Paladin);
         this.playergui = new playerGUI(this.player,this.game,ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
 
-        // // Add a Goblin enemy
-        // this.game.addEntity(new Goblin(
-        //     this.game,
-        //     200,
-        //     650,
-        //     ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"),
-        //     25, 45, 30, 10, 1.25, 100, 10, 20, 5
-        // ));
+         // Add a Goblin enemy
+         this.game.addEntity(new Goblin(
+            this.game,
+            200,
+            650,
+            ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"),
+            25, 45, 30, 10, 1.25, 100, 10, 20, 5
+        ));
 
+       this.game.addEntity(new DarkKnight(
+        this.game,
+        200,
+        650,
+        ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"),
+        25, 45, 30, 10, 1.25, 100, 10, 20, 5
+        ));
+
+       this.game.addEntity(new Skeleton(
+           this.game,
+           300,
+           300,
+           ASSET_MANAGER.getAsset("./Sprites/Ogre_Spritesheet.png"),
+           35, 75, 10, 20, 1.25, 100, 10, 20, 10
+        ));
         // // Add a Shopkeeper enemy/character
         // this.game.addEntity(new Shopkeeper(
         //     this.game,

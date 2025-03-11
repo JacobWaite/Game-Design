@@ -20,8 +20,8 @@ class Goblin extends Humanoid {
         this.aStarCalled = false;
         this.speed = 300;
         this.facing = 1;
-        this.aggroRange = 300;
-        this.deAggroRange = 400;
+        this.aggroRange = 10;
+        this.deAggroRange = 10;
         this.attackRange = 80;
         // this.attackCooldown = 0;
         // this.attackFinished = false;
@@ -49,8 +49,8 @@ class Goblin extends Humanoid {
             //Gives the XP and runes to the paladin
             const paladin = this.game.entities.find(e => e instanceof Paladin);
             if (paladin) {
-                paladin.gainXP(xpGained);
-                paladin.addRunes(runesGained);
+                paladin.xp += xpGained;
+                paladin.runes += runesGained;
             }
         }
     }
@@ -145,10 +145,10 @@ draw(ctx) {
             ctx.translate(-(this.x - this.game.camera.x) * 2.12, 0);
         }
     if (this.dead) {
-        this.animationPlayer.playAnimation("death", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+        this.animationPlayer.getAnimation("death").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
     } else if (this.attacking) {
         // const attackAnim = this.animationPlayer.animations["attack"];
-        this.animationPlayer.playAnimation("attack", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+        this.animationPlayer.getAnimation("attack").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
 
         //Attack lands at the end of the animation
         // if (attackAnim.currentFrame === attackAnim.totalFrames - 1 && !this.attackFinished) {
@@ -165,9 +165,9 @@ draw(ctx) {
         //     this.attackCooldown = 1.5; // Resets the cooldown
         // }
     } else if (this.moving) {
-        this.animationPlayer.playAnimation("walk", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+        this.animationPlayer.getAnimation("walk").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
     } else {
-        this.animationPlayer.playAnimation("idle", this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+        this.animationPlayer.getAnimation("idle").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
     }
     ctx.restore();
 
