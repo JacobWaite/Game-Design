@@ -1,12 +1,12 @@
-class Skeleton extends Humanoid{
+class DarkKnight extends Humanoid{
 	constructor(game, x, y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed, intelligence) {
 		super(game,x,y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed,intelligence);
-		
-		this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 190, 165, 100, 6, [0.1], 25, false, false, true));
-        this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 1, 85, 165, 100, 8, [0.25], 29.5, false, false, true));
-        this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet, 0, 0, 165, 100, 4, [0.25], 25, false, false, true));
-        this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet, 0, 525, 165, 100, 7, [0.25], 1, false, false, true));
-		
+		this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet, 0, 0, 80, 80, 9, [0.15], 0, false, false, true));
+		this.animationPlayer.addAnimation("walk", new Animation(this.spriteSheet, 0, 80, 80, 80, 6, [0.15], 0, false, false, true));
+		this.animationPlayer.addAnimation("attack", new Animation(this.spriteSheet, 0, 160, 80, 80, 12, [0.15], 0, false, false, true));
+		this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet, 0, 320, 80, 80, 23, [0.15], 0, false, false, true));
+		this.animationPlayer.addAnimation("injury", new Animation(this.spriteSheet, 0, 240, 80, 80, 5, [0.15], 0, false, false, true));
+
 		this.originalPosition = { x, y }; // Store the intial position of entity
 		this.target = null;
 		this.path = [];
@@ -14,11 +14,10 @@ class Skeleton extends Humanoid{
 		this.attacking = false;
 		this.dead = false;
 		this.aStarCalled = false;
-		this.speed = 400;
 		this.facing = 1;
-		this.aggroRange = 2;
-		this.deAggroRange = 2;
-		this.attackRange = 2;
+		this.aggroRange = 300;
+		this.deAggroRange = 400;
+		this.attackRange = 100;
 
 		this.hitBox = new BoundingBox(this, width, height, xSpriteOffset, ySpriteOffset, 1.25);
 	}
@@ -29,9 +28,9 @@ class Skeleton extends Humanoid{
 	die() {
         if (!this.dead) {
             this.dead = true;
-            //Generates a random number from 3 to 6
-            const xpGained = Math.floor(Math.random() * 4) + 3;
-            const runesGained = Math.floor(Math.random() * 4) + 3;
+            //Generates a random number from 10 to 20
+            const xpGained = Math.floor(Math.random() * 11) + 10;
+            const runesGained = Math.floor(Math.random() * 11) + 10;
             
             //Gives the XP and runes to the paladin
             const paladin = this.game.entities.find(e => e instanceof Paladin);
@@ -55,18 +54,18 @@ class Skeleton extends Humanoid{
 			y: paladin.hitBox.top + paladin.hitBox.height / 2,
 		};
 
-		//calculate the center of the ogre
-		const ogreCenter = {
+		//calculate the center of the dark knight
+		const darkKnightCenter = {
 			x: this.hitBox.left + this.hitBox.width / 2,
 			y: this.hitBox.top + this.hitBox.height / 2,
 		};
 
-		//distance from ogre to paladin
-		const paladinDistance = getDistance(ogreCenter, paladinCenter);
-		//distance vertically between ogre and paladin
-		const verticalDistance = Math.abs(ogreCenter.y - paladinCenter.y);
-		//convert the coordinates of the ogre knight and the paladin to grid coordinates
-		const ogreGridPos = this.game.grid.worldToGrid(ogreCenter.x, ogreCenter.y);
+		//distance from dark knight to paladin
+		const paladinDistance = getDistance(darkKnightCenter, paladinCenter);
+		//distance vertically between dark knight and paladin
+		const verticalDistance = Math.abs(darkKnightCenter.y - paladinCenter.y);
+		//convert the coordinates of the dark knight and the paladin to grid coordinates
+		const darkKnightGridPos = this.game.grid.worldToGrid(darkKnightCenter.x, darkKnightCenter.y);
 		const paladinGridPos = this.game.grid.worldToGrid(paladinCenter.x, paladinCenter.y);
 		//the max vertical distance before attacking
 		const verticalThreshold = 30;
@@ -74,7 +73,7 @@ class Skeleton extends Humanoid{
 		//lose aggro once paladin is too far away
 		if (paladinDistance > this.deaggroRange) {
 			this.target = { x: this.originalPosition.x, y: this.originalPosition.y };
-		//if the ogre is close enough and is within vertical threshold attack
+		//if the dark knight is close enough and is within vertical threshold attack
 		} else if (paladinDistance <= this.attackRange && verticalDistance <= verticalThreshold) {
 			this.attacking = true;
 			this.moving = false;
@@ -87,7 +86,7 @@ class Skeleton extends Humanoid{
 
 		//recalculate path if the path doesnt exist anymore (paladin moved)
 		if (!this.path || this.path.length === 0 || getDistance(this.target, this.path[this.path.length - 1]) > 32) {
-			this.path = aStar(ogreGridPos, paladinGridPos, this.game.grid);
+			this.path = aStar(darkKnightGridPos, paladinGridPos, this.game.grid);
 		}
 
 		//if path exists follow the path
@@ -101,10 +100,10 @@ class Skeleton extends Humanoid{
 			const dy = nextPos.y - this.y;
 			const distance = Math.sqrt(dx * dx + dy * dy);
 
-			//prevents visual jitter (when the ogre moves too close to the paladin it might shake)
+			//prevents visual jitter (when the dark knight moves too close to the paladin it might shake)
 			if (distance > 0.5) {
-				this.x += (dx / distance) * this.getStatValue("speed") * this.game.clockTick;
-				this.y += (dy / distance) * this.getStatValue("speed") * this.game.clockTick;
+				this.x += (dx / distance) * (this.getStatValue("speed") * this.game.clockTick);
+				this.y += (dy / distance) * (this.getStatValue("speed") * this.game.clockTick);
 
 				// Determine direction
 				this.facing = dx < 0 ? -1 : 1;
@@ -122,16 +121,15 @@ class Skeleton extends Humanoid{
 			ctx.scale(-1, 1);
 			ctx.translate(-(this.x - this.game.camera.x) * 2.12, 0);
 		}
-		if (this.dead) {
-			this.animationPlayer.getAnimation("death").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
-		} else if (this.attacking) {
-			this.animationPlayer.getAnimation("attack").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
-		} else if (this.moving) {
-			this.animationPlayer.getAnimation("walk").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
-		} else {
-			this.animationPlayer.getAnimation("idle").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
-		}
+	if (this.dead) {
+		this.animationPlayer.getAnimation("death").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+	} else if (this.attacking) {
+		this.animationPlayer.getAnimation("attack").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+	} else if (this.moving) {
+		this.animationPlayer.getAnimation("walk").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+	} else {
+		this.animationPlayer.getAnimation("idle").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1.25);
+	}
 	ctx.restore();
 	}
 }
-	

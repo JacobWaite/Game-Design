@@ -15,10 +15,16 @@ class Animation {
     };
 
     drawFrame(tick, ctx, x, y, scale) {
+        if(this.finished) {
+            this.elapsedTime = 0;
+            this.finished = false;
+        }
         this.elapsedTime += tick;
         if (this.isDone()) {
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
+            } else {
+                return;
             }
         }
 
@@ -29,12 +35,40 @@ class Animation {
             this.spriteWidth, this.spriteHeight,
             x, y,
             this.spriteWidth * scale, this.spriteHeight * scale);
+        
         if(!this.loop && this.currentFrame() == this.frameCount) {
             this.finished = true;
             return;
         } 
     };
 
+    drawMatrixFrame(tick, ctx, x, y, scale, matrixWidth) {
+        if(this.finished) {
+            this.elapsedTime = 0;
+            this.finished = false;
+        }
+       
+        this.elapsedTime += tick;
+        if (this.isDone()) {
+            if (this.loop) {
+                this.elapsedTime -= this.totalTime;
+            } 
+        }
+        let frame = this.currentFrame();
+        //console.log(frame);
+        if (this.reverse) frame = this.frameCount - frame - 1;
+        //console.log(this.xStart + frame * (this.spriteWidth + this.spritePadding));
+        ctx.drawImage(this.spritesheet,
+            this.xStart + (frame % matrixWidth) * (this.spriteWidth + this.spritePadding), this.yStart + ((Math.floor(frame / matrixWidth))) * this.spriteHeight, //source from sheet
+            this.spriteWidth, this.spriteHeight,
+            x, y,
+            this.spriteWidth * scale, this.spriteHeight * scale);
+
+        if(!this.loop && this.currentFrame() == this.frameCount - 1) {
+            this.finished = true;
+            return;
+        } 
+    };
     currentFrame() {
         let currentAnimationFrame = 0;
         if(this.variableFrameTime) {
@@ -52,4 +86,9 @@ class Animation {
     isDone() {
         return (this.elapsedTime >= this.totalTime);
     };
+
+    currentlyPlaying(){
+        return this.currentFrame() < this.frameCount - 1;
+    }
+    
 };

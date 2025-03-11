@@ -3,64 +3,91 @@ class SceneManager {
         this.game = game;
         this.game.camera = this;
 
-        // Camera position
+        // Camera / world positioning
         this.x = 0;
         this.y = 0;
-
-        this.worldWidth = this.game.ctx.canvas.width * 2;
-        this.worldHeight = this.game.ctx.canvas.height * 2;
-
-        // Game state
+        this.worldWidth = this.game.ctx.canvas.width * 4;
+        this.worldHeight = this.game.ctx.canvas.height * 4;
         this.currentLevel = 1;
         this.gameOver = false;
         this.paused = false;
-
-        // Reference to player (paladin)
         this.player = null;
-
-        // UI states
         this.showInventory = false;
         this.showStats = false;
+        this.goblin = null;
 
-        // Load the grass background image
-        this.grassImage = ASSET_MANAGER.getAsset("./Sprites/Grass.png");
-        //Play Background Music
+        //Initialize grid
+        const TILE_SIZE = 32;
+        const gridWidth = Math.ceil(this.worldWidth / TILE_SIZE);
+        const gridHeight = Math.ceil(this.worldHeight / TILE_SIZE);
+        this.game.grid = new Grid(gridWidth, gridHeight, TILE_SIZE);
 
-        if (!this.grassImage) {
-            console.error("Grass image not found!");
-        }
 
-        // Load the tree image
-        this.treeImage = ASSET_MANAGER.getAsset("./Sprites/Tree.png");
-        if (!this.treeImage) {
-            console.error("Tree image not found!");
-        }
+        this.treeImage = ASSET_MANAGER.getAsset("./Sprites/TX_Plant.png");
 
-        // Predefined tree positions
-        this.treePositions = [
-            { x: 100, y: 200 },
-            { x: 400, y: 250 },
-            { x: 900, y: 220 },
-            { x: 1200, y: 240 },
-            { x: 1400, y: 220 },
-            { x: 1600, y: 240 },
-        ];
+        // Instantiate the Levels class (which loads the level’s tree entities)
+        this.levels = new Levels(this.game,this.treeImage, LevelStorage);
 
-        // Load initial level
-        this.loadLevel(1);
+        // Now add your game entities:
+        // Add the player character (Paladin)
+        this.game.addEntity(new Paladin(
+            this.game,
+            this.game.ctx.canvas.width / 2,
+            this.game.ctx.canvas.height / 2,
+            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png")],
+            20, 35, 55, 25, 1, 100, 20, 150, 10
+        ));
+        // Set reference to the player for camera tracking
+        this.player = this.game.entities.find(e => e instanceof Paladin);
+        this.playergui = new playerGUI(this.player,this.game,ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
 
-        //********** START: Start screen code
-        // Flag to indicate if start screen is active
+         // Add a Goblin enemy
+         this.game.addEntity(new Goblin(
+            this.game,
+            200,
+            650,
+            ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"),
+            25, 45, 30, 10, 1.25, 100, 10, 20, 5
+        ));
+
+       this.game.addEntity(new DarkKnight(
+        this.game,
+        200,
+        650,
+        ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"),
+        25, 45, 30, 10, 1.25, 100, 10, 20, 5
+        ));
+
+       this.game.addEntity(new Skeleton(
+           this.game,
+           300,
+           300,
+           ASSET_MANAGER.getAsset("./Sprites/Ogre_Spritesheet.png"),
+           35, 75, 10, 20, 1.25, 100, 10, 20, 10
+        ));
+        // // Add a Shopkeeper enemy/character
+        // this.game.addEntity(new Shopkeeper(
+        //     this.game,
+        //     325,
+        //     650,
+        //     ASSET_MANAGER.getAsset("./Sprites/Wizard_Spritesheet.png"),
+        //     25, 65, 20, 15, 1.25, 100, 10, 20, 10
+        // ));
+
+        // // Add a Skeleton enemy
+        // this.game.addEntity(new Skeleton(
+        //     this.game,
+        //     300,
+        //     300,
+        //     ASSET_MANAGER.getAsset("./Sprites/Skeleton_Attack.png"),
+        //     35, 75, 10, 20, 1.25, 100, 10, 20, 10
+        // ));
+
+        // Start screen properties
         this.startScreenActive = true;
-
-        // Load start screen background image
         this.startBackground = ASSET_MANAGER.getAsset("./Sprites/Background.png");
-        if (!this.startBackground) {
-            console.error("Start screen background image not found!");
-        }
 
-        // Define buttons for start screen
-        // Adjust x, y, width, height as needed for your layout
+        // Define start screen buttons
         this.buttons = {
             start: { x: 300, y: 300, width: 200, height: 50, text: "START GAME", defaultColor: "#FFFFFF", hoverColor: "#076500", currentColor: "#FFFFFF" },
             exit: { x: 300, y: 400, width: 200, height: 50, text: "EXIT GAME", defaultColor: "#FFFFFF", hoverColor: "#076500", currentColor: "#FFFFFF" }
@@ -69,7 +96,7 @@ class SceneManager {
         this.buttons.start.x = (canvasWidth - this.buttons.start.width) / 2;
         this.buttons.exit.x = (canvasWidth - this.buttons.exit.width) / 2;
 
-        // Mouse move event to change button color on hover
+        // Mouse event handlers for start screen interaction
         this.handleMouseMove = (e) => {
             if (!this.startScreenActive) return;
             const rect = this.game.ctx.canvas.getBoundingClientRect();
@@ -86,7 +113,6 @@ class SceneManager {
             }
         };
 
-        // Mouse down event to handle button clicks
         this.handleMouseDown = (e) => {
             if (!this.startScreenActive) return;
             const rect = this.game.ctx.canvas.getBoundingClientRect();
@@ -97,38 +123,32 @@ class SceneManager {
                 if (mouseX >= btn.x && mouseX <= btn.x + btn.width &&
                     mouseY >= btn.y && mouseY <= btn.y + btn.height) {
                     if (key === "start") {
-                        // Start the game
                         this.startScreenActive = false;
                         ASSET_MANAGER.stopBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
                     } else if (key === "exit") {
-                        // Exit the game; note that window.close() may not work in all browsers.
                         window.open('', '_self').close();
                     }
                 }
             }
         };
 
-        // Add event listeners for start screen interaction
         this.game.ctx.canvas.addEventListener("mousemove", this.handleMouseMove);
         this.game.ctx.canvas.addEventListener("mousedown", this.handleMouseDown);
-        //********** END: Start screen code
-        // Add this at the end of the SceneManager constructor
+
+        // Create & position the sound checkbox (optional)
         const canvas = this.game.ctx.canvas;
         this.soundCheckbox = document.createElement("input");
         this.soundCheckbox.type = "checkbox";
         this.soundCheckbox.id = "soundCheckbox";
-// Start unchecked so audio remains muted until the user interacts.
-        this.soundCheckbox.checked = false;
+        this.soundCheckbox.checked = false; // start unchecked
 
         this.soundLabel = document.createElement("label");
         this.soundLabel.htmlFor = "soundCheckbox";
         this.soundLabel.textContent = " SOUND";
 
-// Create a container div to position the checkbox
         this.soundContainer = document.createElement("div");
         this.soundContainer.style.position = "absolute";
         this.soundContainer.style.bottom = "10px";
-// Align it with the canvas left edge (adjust as needed)
         this.soundContainer.style.left = canvas.offsetLeft + "px";
         this.soundContainer.style.zIndex = "1000";
 
@@ -136,17 +156,17 @@ class SceneManager {
         this.soundContainer.appendChild(this.soundLabel);
         document.body.appendChild(this.soundContainer);
 
-// Initially mute all sounds
+        // Mute all sounds initially
         for (let key in ASSET_MANAGER.audioCache) {
             if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
                 ASSET_MANAGER.audioCache[key].muted = true;
             }
         }
 
-// Toggle sound muting based on checkbox state
+        // Toggle sound muting based on checkbox state
         this.soundCheckbox.addEventListener("change", () => {
             const mute = !this.soundCheckbox.checked;
-            if (this.soundCheckbox.checked){
+            if (this.soundCheckbox.checked) {
                 ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
             }
             for (let key in ASSET_MANAGER.audioCache) {
@@ -155,102 +175,63 @@ class SceneManager {
                 }
             }
         });
-
     }
 
-    loadLevel(level) {
-        // Reference the first paladin entity as the player
+    // update() {
+    //     // Do not update the scene if we're on the start screen.
+    //     if (this.startScreenActive) return;
 
-        if (this.grassImage) {
-            for (let x = 0; x < this.worldWidth * 2; x += this.grassImage.width - 1) {
-                for (let y = 0; y < this.worldHeight * 2; y += this.grassImage.height - 1) {
-                    this.game.addBackground(new background(this.game, x, y, this.grassImage));
-                }
-            }
-        } else {
-            console.warn("Background image not available!");
-        }
+    //     // Update camera position based on the player's location.
+    //     if (!this.player) return;
 
-        if (this.treeImage) {
-            for (let pos of this.treePositions) {
-                this.game.addEntity(new Entity(this.game, pos.x, pos.y, this.treeImage, 40, 80, 20, 0, 2)); // Adjust the size (64x64) as needed
-            }
-        } else {
-            console.warn("Tree image not available!");
-        }
-        this.game.addEntity(new Paladin(gameEngine, this.game.ctx.canvas.width / 2, this.game.ctx.canvas.height / 2, ASSET_MANAGER.getAsset("./Sprites/Paladin_Spritesheet.png"), 25, 50, 15, 30, 1.25, 100, 20, 150, 10));
+    //     let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;
+    //     let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
+    //     this.x = currentX;
+    //     this.y = currentY;
 
-        this.player = this.game.entities.find(entity => entity instanceof Paladin);
-        if (!this.player) {
-            console.log("No player found in entities");
-        }
-
-        this.game.addEntity(new Goblin(gameEngine, 200,650, ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), 25, 45, 30, 10, 1.25, 100, 10, 20, 5,));
-	    this.game.addEntity(new Shopkeeper(gameEngine,325,650, ASSET_MANAGER.getAsset("./Sprites/Wizard_Spritesheet.png"), 25, 65, 20, 15, 1.25, 100, 10, 20, 10));
-	    this.game.addEntity(new Skeleton(gameEngine,300,300, ASSET_MANAGER.getAsset("./Sprites/Skeleton_Attack.png"), 35, 75, 10, 20, 1.25, 100, 10, 20, 10));
-    }
+    //     // Simple boundary constraints.
+    //     if (this.x < 0) this.x = 0;
+    //     if (this.y < 0) this.y = 0;
+    //     if (this.x > this.worldWidth) this.x = this.worldWidth;
+    //     if (this.y > this.worldHeight) this.y = this.worldHeight;
+    // }
 
     update() {
-        //********** START: Start screen update code
-        if (this.startScreenActive) {
-            // Do not update game scene while on start screen
-
-            return;
-        }
+        
         //********** END: Start screen update code
-
-        // Scene manager update logic
-        if (this.player) {
-            // Center camera on player           
-            let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;  // Character width and height, camera moving 
-            let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
-            this.x = currentX;
-            this.y = currentY;
-
-            /*
-            if (currentX <= 0) {
-                this.x = 0;
-            } else {
-            this.x = currentX;
-            }
-            if (currentY <= 0) {
-                this.y = 0;
-            } else {
-                this.y = currentY;
-            }
-            if (currentX >= this.worldWidth) {
-                this.x = 0;
-            } else {
-                this.x = currentX;
-            }
-            if (currentY >= this.worldHeight) {
-                this.y = 0;
-            }
-            else {
-                this.y = currentY;
-            }
-            */
+        this.playergui.update(this.game.keys.get("e"));
+        let currentX = this.player.x - this.game.ctx.canvas.width / 2 ;  // Character width and height, camera moving 
+        let currentY = this.player.y - this.game.ctx.canvas.height / 2;
+        this.x = currentX;
+        this.y = currentY;
+        
+        if (currentX <= 0) {
+            this.x = 0;
+        } 
+        if (currentY <= 0) {
+            this.y = 0;
+        } 
+        if (currentX >= this.worldWidth) {
+            this.x = this.worldWidth;
+        } 
+        if (currentY >= this.worldHeight) {
+            this.y = this.worldHeight;
         }
+        
+        
     }
 
     draw(ctx) {
-        //********** START: Start screen draw code
+        // Draw start screen if active.
         if (this.startScreenActive) {
-
-            // Draw start screen background
-
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             if (this.startBackground) {
                 ctx.drawImage(this.startBackground, 0, 0, ctx.canvas.width, ctx.canvas.height);
-            } else {
-
             }
-            // Draw buttons
             for (let key in this.buttons) {
                 let btn = this.buttons[key];
                 ctx.fillStyle = btn.currentColor;
                 ctx.fillRect(btn.x, btn.y, btn.width, btn.height);
-                // Draw button text centered
                 ctx.fillStyle = "black";
                 ctx.font = "20px Arial";
                 const textMetrics = ctx.measureText(btn.text);
@@ -260,50 +241,39 @@ class SceneManager {
             }
             return;
         }
-        //********** END: Start screen draw code
 
-        // Reset transform for HUD elements (these should not move with camera)
-        ctx.restore();        
 
-        // Draw HUD background
+        // Draw a HUD (for example, top bar with player stats)
         ctx.fillStyle = "rgba(49, 176, 123, 0.7)";
         ctx.fillRect(0, 0, ctx.canvas.width, 60);
-
-        // Draw player stats if they exist
         if (this.player) {
-            // Health bar
             this.drawHealthBar(ctx, 10, 10, 200, 20);
-
-            // Stats
+            this.playergui.draw(ctx);
             ctx.fillStyle = "white";
             ctx.font = "16px Arial";
             ctx.fillText(`Level ${this.player.experienceLevel}`, 10, 50);
             ctx.fillText(`Attack: ${this.player.getStatValue("strength")}`, 100, 50);
             ctx.fillText(`Speed: ${this.player.getStatValue("speed")}`, 250, 50);
-            ctx.fillText(`Defense: ${this.player.getStatValue("intelligence")}`, 400, 50);
+            ctx.fillText(`Defense: ${this.player.getStatValue("stealth")}`, 400, 50);
         }
 
-        // Draw debug info if enabled
+        // Draw debug information if enabled.
         if (this.game.debug) {
             this.drawDebugInfo(ctx);
         }
     }
 
     drawHealthBar(ctx, x, y, width, height) {
-        // Background
         ctx.fillStyle = "#444444";
         ctx.fillRect(x, y, width, height);
-
-        // Health amount
+        if (!this.player) return;
         const healthPercent = this.player.getStatValue("health") / 100;
         const healthColor = this.getHealthColor(healthPercent);
         ctx.fillStyle = healthColor;
         ctx.fillRect(x, y, width * healthPercent, height);
-
-        // Health text
         ctx.fillStyle = "white";
         ctx.font = "12px Arial";
-        ctx.fillText(`${this.player.getStatValue("health")} / ${100}`, x + width/2 - 20, y + 15);
+        ctx.fillText(`${this.player.getStatValue("health")} / 100`, x + width / 2 - 20, y + 15);
     }
 
     getHealthColor(percent) {
@@ -313,9 +283,9 @@ class SceneManager {
     }
 
     drawDebugInfo(ctx) {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.font = "12px Arial";
-        ctx.fillText(`FPS: ${Math.round(1/this.game.clockTick)}`, 10, ctx.canvas.height - 20);
+        ctx.fillText(`FPS: ${Math.round(1 / this.game.clockTick)}`, 10, ctx.canvas.height - 20);
         ctx.fillText(`Entities: ${this.game.entities.length}`, 10, ctx.canvas.height - 40);
         if (this.player) {
             ctx.fillText(`Player Pos: (${Math.round(this.player.x)}, ${Math.round(this.player.y)})`, 10, ctx.canvas.height - 60);
