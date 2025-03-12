@@ -22,6 +22,11 @@ ASSET_MANAGER.queueDownload("./Sprites/TX_Struct.png");
 ASSET_MANAGER.queueDownload("./Sprites/TX_Tileset_Grass.png");
 ASSET_MANAGER.queueDownload("./Sprites/TX_Tileset_Stone_Ground.png");
 ASSET_MANAGER.queueDownload("./Sprites/TX_Tileset_Wall.png");
+ASSET_MANAGER.queueDownload("/Sprites/menuAssets/muteButton.png");
+ASSET_MANAGER.queueDownload("/Sprites/menuAssets/button.png");
+ASSET_MANAGER.queueDownload("/Sprites/menuAssets/questionButton.png");
+
+
 
 ASSET_MANAGER.queueSound("./Sprites/Music/backgroundMusic.mp3");
 ASSET_MANAGER.queueSound("./Sprites/Music/attack.mp3");

@@ -3,6 +3,108 @@ class SceneManager {
         this.game = game;
         this.game.camera = this;
 
+
+
+
+
+
+
+
+
+
+
+
+        this.soundOn = false;
+        this.soundButton = document.createElement("img");
+        this.soundButton.src = "./Sprites/menuAssets/muteButton.png"; // initial muted image
+        this.soundButton.style.position = "absolute";
+        this.soundButton.style.bottom = "230px";
+        this.soundButton.style.right = "450px";
+        this.soundButton.style.cursor = "pointer";
+
+        this.soundButton.addEventListener("click", () => {
+            this.soundOn = !this.soundOn;
+            if (this.soundOn) {
+                ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
+                this.soundButton.src = "./Sprites/menuAssets/button.png";
+            } else {
+                ASSET_MANAGER.stopBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
+                this.soundButton.src = "./Sprites/menuAssets/muteButton.png";
+            }
+            for (let key in ASSET_MANAGER.audioCache) {
+                if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
+                    ASSET_MANAGER.audioCache[key].muted = !this.soundOn;
+                }
+            }
+        });
+
+
+
+        // Create the instructions button.
+        this.instructionsButton = document.createElement("img");
+        this.instructionsButton.src = "./Sprites/menuAssets/questionButton.png"; // your instructions icon path
+        this.instructionsButton.style.position = "absolute";
+        this.instructionsButton.style.bottom = "230px";
+        this.instructionsButton.style.left = "16px"; // adjust corner as needed
+        this.instructionsButton.style.cursor = "pointer";
+
+// Create the context window for instructions.
+        this.instructionsContainer = document.createElement("div");
+        this.instructionsContainer.style.position = "absolute";
+        this.instructionsContainer.style.bottom = "300px"; // position above the button
+        this.instructionsContainer.style.left = "16px";  // same horizontal position as button
+        this.instructionsContainer.style.padding = "10px";
+        this.instructionsContainer.style.backgroundColor = "rgba(92,171,7,1)";
+        this.instructionsContainer.style.color = "black";
+        this.instructionsContainer.style.border = "2px solid black";
+        this.instructionsContainer.style.display = "none"; // hidden by default
+
+        // Add the instructions content.
+                this.instructionsContainer.innerHTML = `
+  <strong>Player Controls:</strong>
+  <ul style="margin: 0; padding-left: 20px;">
+    <li>W: Up</li>
+    <li>S: Down</li>
+    <li>A: Left</li>
+    <li>D: Right</li>
+    <li>J: Attack / Flash Mode</li>
+    <li>K: Death Animation</li>
+  </ul>
+`;
+
+        // Toggle context window on button click.
+                this.instructionsButton.addEventListener("click", () => {
+                    this.instructionsContainer.style.display =
+                        this.instructionsContainer.style.display === "none" ? "block" : "none";
+                });
+
+        // Append the button and the instructions container to the document.
+                document.body.appendChild(this.instructionsButton);
+                document.body.appendChild(this.instructionsContainer);
+
+
+
+
+
+
+
+
+
+        document.body.appendChild(this.soundButton);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // Camera / world positioning
         this.x = 0;
         this.y = 0;
@@ -152,8 +254,7 @@ class SceneManager {
         this.soundContainer.style.left = canvas.offsetLeft + "px";
         this.soundContainer.style.zIndex = "1000";
 
-        this.soundContainer.appendChild(this.soundCheckbox);
-        this.soundContainer.appendChild(this.soundLabel);
+
         document.body.appendChild(this.soundContainer);
 
         // Mute all sounds initially
