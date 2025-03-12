@@ -6,7 +6,7 @@ class Goblin extends Humanoid {
         this.animationPlayer.addAnimation("attackLeft", new Animation(this.spriteSheet[1], 206, 250, 105, 84, 6, [0.1], 5, false, true, false));
         this.animationPlayer.addAnimation("walkLeft", new Animation(this.spriteSheet[1], 0, 78, 104, 78, 8, [0.15], 6, false, true, true));
         this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet[0], 118, 0, 104, 80, 7, [0.5], 1, false, false, true));
-        this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[0], 0, 442, 104, 80, 7, [0.25], 1, false, false, false));
+        this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[0], 0, 442, 104, 80, 7, [0.1], 1, false, false, false));
 
         //Make a state where the goblin finishes attacking so that the paladin takes damage after the goblin finishes attacking and not every game clock tick.
         //Add xp and rune drops
