@@ -99,8 +99,8 @@ class SceneManager {
 
         this.game.addEntity(new Paladin(
             this.game,
-            this.game.ctx.canvas.width / 2,
-            this.game.ctx.canvas.height / 2,
+            1000,
+            120,
             [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png"),ASSET_MANAGER.getAsset("./Sprites/Pray.png"),ASSET_MANAGER.getAsset("./Sprites/Death.png")],
             24, 42, 68, 22, 1.25, 100, 20, 150, 10
         ));
@@ -109,30 +109,21 @@ class SceneManager {
         this.playergui = new playerGUI(this.player,this.game,ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
 
          // Add a Goblin enemy
-         this.game.addEntity(new Goblin(
-            this.game,
-            1200,
-            800,
-            [ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],
-            25, 45, 18, 25, 1, 80, 8, 75, 5
-        ));
+        this.game.addEntity(new Goblin(this.game,1200,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,900,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
+        this.game.addEntity(new Goblin(this.game,500,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
 
-        this.game.addEntity(new Goblin(
-            this.game,
-            900,
-            850,
-            [ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],
-            25, 45, 18, 25, 1, 80, 5, 50, 5
-        ));
+        this.game.addEntity(new Goblin(this.game,1800,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1700,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
+        this.game.addEntity(new Goblin(this.game,1600,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
 
-        this.game.addEntity(new Goblin(
-            this.game,
-            500,
-            850,
-            [ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],
-            25, 45, 18, 25, 1, 80, 5, 50, 5
-        ));
+        this.game.addEntity(new Goblin(this.game,800,2200,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,600,2350,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
+        this.game.addEntity(new Goblin(this.game,400,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
 
+        this.game.addEntity(new Goblin(this.game,1600,2000,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1650,2050,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
+        this.game.addEntity(new Goblin(this.game,1550,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
         
        this.game.addEntity(new DarkKnight(
         this.game,
@@ -141,7 +132,14 @@ class SceneManager {
         [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
         22, 32, 48, 44, 1.5, 250, 20, 120, 5
         ));
-
+        
+        this.game.addEntity(new DarkKnight(
+            this.game,
+            4000,
+            800,
+            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+            22, 32, 48, 44, 1.5, 250, 20, 120, 5
+            ));
         
 
         this.game.addEntity(new DarkKnight(
@@ -152,31 +150,13 @@ class SceneManager {
             22, 32, 48, 44, 1.5, 250, 20, 120, 5
         ));
 
-       this.game.addEntity(new Skeleton(
-           this.game,
-           3800,
-           400,
-           ASSET_MANAGER.getAsset("./Sprites/Ogre_Spritesheet.png"),
-           35, 75, 10, 20, 1, 200, 10, 5, 10
+        this.game.addEntity(new DarkKnight(
+            this.game,
+            1200,
+            2600,
+            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+            22, 32, 48, 44, 1.5, 250, 20, 120, 5
         ));
-        
-        // // Add a Shopkeeper enemy/character
-        // this.game.addEntity(new Shopkeeper(
-        //     this.game,
-        //     325,
-        //     650,
-        //     ASSET_MANAGER.getAsset("./Sprites/Wizard_Spritesheet.png"),
-        //     25, 65, 20, 15, 1.25, 100, 10, 20, 10
-        // ));
-
-        // // Add a Skeleton enemy
-        // this.game.addEntity(new Skeleton(
-        //     this.game,
-        //     300,
-        //     300,
-        //     ASSET_MANAGER.getAsset("./Sprites/Skeleton_Attack.png"),
-        //     35, 75, 10, 20, 1.25, 100, 10, 20, 10
-        // ));
 
         // Start screen properties
         this.startScreenActive = true;

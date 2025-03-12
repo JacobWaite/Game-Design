@@ -18,7 +18,7 @@ class Paladin extends Humanoid {
         this.animationPlayer.addAnimation("Kneel", new Animation(this.spriteSheet[4], 0, 0, 128, 64, 6, [0.15], 0, false, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[5], 0, 0, 128, 64, 4, [0.175], 0, false, false, false));
         this.experienceLevel = 0;
-        this.availableStatPoints = 13;
+        this.availableStatPoints = 0;
         this.xp = 0;
         this.runes = 0;
         this.dead = false;
