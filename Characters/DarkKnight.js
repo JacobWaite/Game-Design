@@ -3,9 +3,9 @@ class DarkKnight extends Humanoid{
 		super(game,x,y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed,intelligence);
 		this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet[0], 0, 0, 80, 80, 9, [0.15], 0, false, false, true));
 		this.animationPlayer.addAnimation("walkRight", new Animation(this.spriteSheet[0], 0, 80, 80, 80, 6, [0.15], 0, false, false, true));
-		this.animationPlayer.addAnimation("attackRight", new Animation(this.spriteSheet[0], 0, 160, 80, 80, 12, [0.1], 0, false, false, false));
+		this.animationPlayer.addAnimation("attackRight", new Animation(this.spriteSheet[0], 0, 160, 80, 80, 12, [0.15], 0, false, false, false));
 		this.animationPlayer.addAnimation("walkLeft", new Animation(this.spriteSheet[1], 1360, 80, 80, 80, 6, [0.15], 0, false, true, true));
-		this.animationPlayer.addAnimation("attackLeft", new Animation(this.spriteSheet[1], 880, 160, 80, 80, 12, [0.1], 0, false, true, false));
+		this.animationPlayer.addAnimation("attackLeft", new Animation(this.spriteSheet[1], 880, 160, 80, 80, 12, [0.15], 0, false, true, false));
 		this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[0], 0, 320, 80, 80, 23, [0.1], 0, false, false, false));
 		this.animationPlayer.addAnimation("injury", new Animation(this.spriteSheet[0], 0, 240, 80, 80, 5, [0.15], 0, false, false, false));
 

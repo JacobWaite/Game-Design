@@ -21,12 +21,12 @@ class Goblin extends Humanoid {
         this.aStarCalled = false;
         this.facing = 1;
         this.aggroRange = 300;
-        this.attackRange = 80;
+        this.attackRange = 50;
         this.removeFromWorld = false;
         this.attacking = false;
         this.attackComplete = false;
         this.combatBoxRight = new BoundingBox(this, 65, 55, 50, 10, this.scale);
-        this.combatBoxLeft = new BoundingBox(this, 60, 45, -25, 20, this.scale);
+        this.combatBoxLeft = new BoundingBox(this, 55, 55, 0, 15, this.scale);
        
 
         this.hitBox = new BoundingBox(this, width, height, xSpriteOffset, ySpriteOffset, 1.25);

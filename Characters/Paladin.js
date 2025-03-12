@@ -124,7 +124,7 @@ class Paladin extends Humanoid {
                 } 
                 if(this.colliding && otherHitbox.parent instanceof checkpoint) {
                     this.atCheckpoint = true;
-                    if(this.getStatValue("health") < 100) {
+                    if(this.getStatValue("health") < this.totalHealth) {
                         if(this.combatTimer <= 0) {
                             this.combatTimer = 0;
                             this.incrementStatValue("health", 5 * this.game.clockTick);
