@@ -53,7 +53,8 @@ class SceneManager {
         <li>S: Down</li>
         <li>A: Left</li>
         <li>D: Right</li>
-        <li>Left Mouse Button: Attack</li>
+        <li>Hold E: Access Stat Upgrade Menu</li>
+         <li>Left Mouse Button: Attack</li>
         </ul>
         `;
 
