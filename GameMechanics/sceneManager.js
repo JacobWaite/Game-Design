@@ -296,6 +296,7 @@ class SceneManager {
         }
         this.playergui.draw(ctx);
         if(this.game.won) {
+            ctx.drawImage(ASSET_MANAGER.getAsset("./Sprites/YouWin.png"),0,0);
 
         }else if(this.game.gameOver) {
             ctx.drawImage(ASSET_MANAGER.getAsset("./Sprites/YOUDIED.png"),0,0);
