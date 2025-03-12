@@ -19,7 +19,7 @@ class GameEngine {
         this.mouseCoordinates= {x: 0, y:0};
         this.keys = new Map();
         this.mousePressed = false;
-        this.debug = true;
+        this.debug = false
     };
 
     init(ctx) {
@@ -115,7 +115,7 @@ class GameEngine {
     update() {
         if(this.won || this.gameOver) return;
         let entitiesCount = this.entities.length;
-        this.debug = document.getElementById("debug").checked;
+        //this.debug = document.getElementById("debug").checked;
         this.camera.update();
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];

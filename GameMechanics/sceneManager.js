@@ -212,24 +212,20 @@ class SceneManager {
 
         // Create & position the sound checkbox (optional)
         const canvas = this.game.ctx.canvas;
-        this.soundCheckbox = document.createElement("input");
-        this.soundCheckbox.type = "checkbox";
-        this.soundCheckbox.id = "soundCheckbox";
-        this.soundCheckbox.checked = false; // start unchecked
+      
+        // this.soundLabel = document.createElement("label");
+        // this.soundLabel.htmlFor = "soundCheckbox";
+        // this.soundLabel.textContent = " SOUND";
 
-        this.soundLabel = document.createElement("label");
-        this.soundLabel.htmlFor = "soundCheckbox";
-        this.soundLabel.textContent = " SOUND";
+        // this.soundContainer = document.createElement("div");
+        // this.soundContainer.style.position = "absolute";
+        // this.soundContainer.style.bottom = "10px";
+        // this.soundContainer.style.left = canvas.offsetLeft + "px";
+        // this.soundContainer.style.zIndex = "1000";
 
-        this.soundContainer = document.createElement("div");
-        this.soundContainer.style.position = "absolute";
-        this.soundContainer.style.bottom = "10px";
-        this.soundContainer.style.left = canvas.offsetLeft + "px";
-        this.soundContainer.style.zIndex = "1000";
-
-        this.soundContainer.appendChild(this.soundCheckbox);
-        this.soundContainer.appendChild(this.soundLabel);
-        document.body.appendChild(this.soundContainer);
+        // this.soundContainer.appendChild(this.soundCheckbox);
+        // this.soundContainer.appendChild(this.soundLabel);
+        // document.body.appendChild(this.soundContainer);
 
         // Mute all sounds initially
         for (let key in ASSET_MANAGER.audioCache) {
@@ -239,17 +235,17 @@ class SceneManager {
         }
 
         // Toggle sound muting based on checkbox state
-        this.soundCheckbox.addEventListener("change", () => {
-            const mute = !this.soundCheckbox.checked;
-            if (this.soundCheckbox.checked) {
-                ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
-            }
-            for (let key in ASSET_MANAGER.audioCache) {
-                if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
-                    ASSET_MANAGER.audioCache[key].muted = mute;
-                }
-            }
-        });
+        // this.soundCheckbox.addEventListener("change", () => {
+        //     const mute = !this.soundCheckbox.checked;
+        //     if (this.soundCheckbox.checked) {
+        //         ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
+        //     }
+        //     for (let key in ASSET_MANAGER.audioCache) {
+        //         if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
+        //             ASSET_MANAGER.audioCache[key].muted = mute;
+        //         }
+        //     }
+        // });
     }
 
     update() {
