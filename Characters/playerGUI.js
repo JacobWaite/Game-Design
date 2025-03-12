@@ -30,8 +30,11 @@ class playerGUI {
         this.drawHealthBar(ctx, 194, this.game.ctx.canvas.height - this.HUD.naturalHeight + 54, 176, 15);
         this.drawXpBar(ctx, 191, this.game.ctx.canvas.height - this.HUD.naturalHeight + 39, 176, 6);
         ctx.fillStyle = "white";
-        ctx.font = "18px Arial";
-        ctx.fillText(`Level ${this.player.experienceLevel}     ${this.player.xp} / ${this.player.experienceNeeded()}`, 191, this.game.ctx.canvas.height - this.HUD.naturalHeight + 35);
+        ctx.font = "16px Arial";
+        ctx.fillText(`${this.player.xp} / ${this.player.experienceNeeded()}   Runes: ${this.player.getRunes()}`, 191, this.game.ctx.canvas.height - this.HUD.naturalHeight + 35);
+        ctx.font = "20px Arial";
+        ctx.fillText(`Level ${this.player.experienceLevel}`, 70, this.game.ctx.canvas.height - 16);
+
         if(this.visible) {
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(this.sprite, this.x - this.sprite.naturalWidth, this.y - this.sprite.naturalHeight/2, this.sprite.naturalWidth * 3, this.sprite.naturalHeight * 3);

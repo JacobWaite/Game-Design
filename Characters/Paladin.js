@@ -16,13 +16,16 @@ class Paladin extends Humanoid {
         this.animationPlayer.addAnimation("attackright", new Animation(this.spriteSheet[3], 0, 0, 128, 64, 10, [0.1,0.1,0.1,0.075,0.1,0.1,0.075,0.075, 0.05, 0.075], 0, true, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.animationPlayer.addAnimation("attackleft", new Animation(this.spriteSheet[3], 512, 128, 128, 64, 10, [0.1,0.1,0.1,0.075,0.1,0.1,0.075,0.075, 0.05, 0.075], 0, true, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.animationPlayer.addAnimation("Kneel", new Animation(this.spriteSheet[4], 0, 0, 128, 64, 6, [0.15], 0, false, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
+        this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[5], 0, 0, 128, 64, 4, [0.175], 0, false, false, false));
         this.experienceLevel = 0;
         this.availableStatPoints = 13;
         this.xp = 0;
         this.runes = 0;
         this.dead = false;
+        this.died = false;
         this.moving = false;
         this.attacking = false;
+        this.removeFromWorld = false;
         this.attackComplete = false;
         this.idle = true;
         this.atCheckpoint = false;
@@ -39,13 +42,22 @@ class Paladin extends Humanoid {
     experienceNeeded() {
         return this.experienceLevel * 8 + 32;
     }
+
+    getRunes(){
+        return this.runes;
+    }
     /**
      * @inheritdoc
      */
     update() {
-        if(!this.dead) {
+        if(this.getStatValue("health") <= 0) {
+            this.dead = true;
+            this.game.gameOver = true;
+            return;
+        }
             this.moving = false;
             this.attacking = false;
+        
             this.atCheckpoint = false;
             if(this.combatTimer > 0) this.combatTimer -= this.game.clockTick;
             if(this.getStatValue("regen") > 0 && this.totalHealth > this.getStatValue("health")) this.incrementStatValue("health", this.getStatValue("regen") * this.game.clockTick);
@@ -134,8 +146,8 @@ class Paladin extends Humanoid {
                 }
             }
            
-        } 
-    };
+    } 
+    
     
     /**
      * @inheritdoc 
@@ -146,7 +158,10 @@ class Paladin extends Humanoid {
             if(this.facing == 1) this.combatBoxRight.drawHitBox(ctx);
             if(this.facing == -1)this.combatBoxLeft.drawHitBox(ctx);
         }
-        if (this.atCheckpoint && !this.moving){
+        /*if(this.dead && !this.died) {
+            this.animationPlayer.getAnimation("death").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale, 2);
+        } else */ 
+         if (this.atCheckpoint && !this.moving){
             this.animationPlayer.getAnimation("Kneel").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 4);
             if(this.animationPlayer.currentAnimation.currentFrame() == 4) this.animationPlayer.currentAnimation.pause();
         } else if(this.attacking && this.facing == 1) {
@@ -163,4 +178,5 @@ class Paladin extends Humanoid {
             this.animationPlayer.getAnimation("idle").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 2);
         }
     }
-} 
+
+}

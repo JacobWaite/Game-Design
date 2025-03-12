@@ -101,7 +101,7 @@ class SceneManager {
             this.game,
             this.game.ctx.canvas.width / 2,
             this.game.ctx.canvas.height / 2,
-            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png"),ASSET_MANAGER.getAsset("./Sprites/Pray.png")],
+            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png"),ASSET_MANAGER.getAsset("./Sprites/Pray.png"),ASSET_MANAGER.getAsset("./Sprites/Death.png")],
             24, 42, 68, 22, 1.25, 100, 20, 150, 10
         ));
         // Set reference to the player for camera tracking
@@ -272,46 +272,28 @@ class SceneManager {
         });
     }
 
-    // update() {
-    //     // Do not update the scene if we're on the start screen.
-    //     if (this.startScreenActive) return;
-
-    //     // Update camera position based on the player's location.
-    //     if (!this.player) return;
-
-    //     let currentX = this.player.x - this.game.ctx.canvas.width / 2 + this.player.width * 2;
-    //     let currentY = this.player.y - this.game.ctx.canvas.height / 2 + this.player.height;
-    //     this.x = currentX;
-    //     this.y = currentY;
-
-    //     // Simple boundary constraints.
-    //     if (this.x < 0) this.x = 0;
-    //     if (this.y < 0) this.y = 0;
-    //     if (this.x > this.worldWidth) this.x = this.worldWidth;
-    //     if (this.y > this.worldHeight) this.y = this.worldHeight;
-    // }
-
     update() {
+        if(!this.player.dead || !this.game.won) {
+            this.playergui.update(this.game.keys.get("e"));
+            let currentX = this.player.x - this.game.ctx.canvas.width / 2 ;  // Character width and height, camera moving 
+            let currentY = this.player.y - this.game.ctx.canvas.height / 2;
+            this.x = currentX;
+            this.y = currentY;
         
-        //********** END: Start screen update code
-        this.playergui.update(this.game.keys.get("e"));
-        let currentX = this.player.x - this.game.ctx.canvas.width / 2 ;  // Character width and height, camera moving 
-        let currentY = this.player.y - this.game.ctx.canvas.height / 2;
-        this.x = currentX;
-        this.y = currentY;
-        
-        if (currentX <= 37) {
-            this.x = 37;
-        } 
-        if (currentY <= 37) {
-            this.y = 37;
-        } 
-        if (currentX >= this.worldWidth - this.game.ctx.canvas.width) {
-            this.x = this.worldWidth - this.game.ctx.canvas.width;
-        } 
-        if (currentY >= this.worldHeight - this.game.ctx.canvas.height) {
-            this.y = this.worldHeight - this.game.ctx.canvas.height;
+            if (currentX <= 37) {
+                this.x = 37;
+            } 
+            if (currentY <= 37) {
+                this.y = 37;
+            } 
+            if (currentX >= this.worldWidth - this.game.ctx.canvas.width) {
+                this.x = this.worldWidth - this.game.ctx.canvas.width;
+            } 
+            if (currentY >= this.worldHeight - this.game.ctx.canvas.height) {
+                this.y = this.worldHeight - this.game.ctx.canvas.height;
+            }
         }
+        
         
         
     }
@@ -337,7 +319,12 @@ class SceneManager {
             return;
         }
         this.playergui.draw(ctx);
-        // Draw debug information if enabled.
+        if(this.game.won) {
+
+        }else if(this.game.gameOver) {
+            ctx.drawImage(ASSET_MANAGER.getAsset("./Sprites/YOUDIED.png"),0,0);
+        }
+        // Draw debug information if en abled.
         if (this.game.debug) {
             this.drawDebugInfo(ctx);
         }

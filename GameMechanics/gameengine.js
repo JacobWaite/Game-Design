@@ -14,6 +14,8 @@ class GameEngine {
         this.click = false;
         this.mouse = null;
         this.wheel = null;
+        this.won = false;
+        this.gameOver = false;
         this.mouseCoordinates= {x: 0, y:0};
         this.keys = new Map();
         this.mousePressed = false;
@@ -107,10 +109,11 @@ class GameEngine {
             }
         }
         this.camera.draw(this.ctx);
-
+        if(this.gameOver || this.won) this.entities = [];
     };
 
     update() {
+        if(this.won || this.gameOver) return;
         let entitiesCount = this.entities.length;
         this.debug = document.getElementById("debug").checked;
         this.camera.update();
@@ -126,6 +129,12 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);
+                //this.entities.find(e => e instanceof Skeleton)
+                if(!this.entities.find(e => e instanceof DarkKnight) || !this.entities.find(e => e instanceof Goblin )) {
+                    this.won = true;
+                }
+                
+
             }
         }
 

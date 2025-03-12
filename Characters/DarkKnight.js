@@ -3,9 +3,9 @@ class DarkKnight extends Humanoid{
 		super(game,x,y, spriteSheet, width, height, xSpriteOffset, ySpriteOffset, scale, health, strength, speed,intelligence);
 		this.animationPlayer.addAnimation("idle", new Animation(this.spriteSheet[0], 0, 0, 80, 80, 9, [0.15], 0, false, false, true));
 		this.animationPlayer.addAnimation("walkRight", new Animation(this.spriteSheet[0], 0, 80, 80, 80, 6, [0.15], 0, false, false, true));
-		this.animationPlayer.addAnimation("attackRight", new Animation(this.spriteSheet[0], 0, 160, 80, 80, 12, [0.15], 0, false, false, false));
+		this.animationPlayer.addAnimation("attackRight", new Animation(this.spriteSheet[0], 0, 160, 80, 80, 12, [0.125], 0, false, false, false));
 		this.animationPlayer.addAnimation("walkLeft", new Animation(this.spriteSheet[1], 1360, 80, 80, 80, 6, [0.15], 0, false, true, true));
-		this.animationPlayer.addAnimation("attackLeft", new Animation(this.spriteSheet[1], 880, 160, 80, 80, 12, [0.15], 0, false, true, false));
+		this.animationPlayer.addAnimation("attackLeft", new Animation(this.spriteSheet[1], 880, 160, 80, 80, 12, [0.125], 0, false, true, false));
 		this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[0], 0, 320, 80, 80, 23, [0.1], 0, false, false, false));
 		this.animationPlayer.addAnimation("injury", new Animation(this.spriteSheet[0], 0, 240, 80, 80, 5, [0.15], 0, false, false, false));
 
@@ -156,7 +156,7 @@ class DarkKnight extends Humanoid{
 	drawHealthBar(ctx, x, y, width, height) {
         ctx.fillStyle = "#444444";
         ctx.fillRect(x, y, width, height);
-        const healthPercent = this.getStatValue("health") / 100;
+        const healthPercent = this.getStatValue("health") / 250;
         const healthColor = this.getHealthColor(healthPercent);
         ctx.fillStyle = healthColor;
         ctx.fillRect(x, y, width * healthPercent, height);
@@ -170,7 +170,7 @@ class DarkKnight extends Humanoid{
         return "#ff0000";
     }
 	draw(ctx) {
-	this.drawHealthBar(ctx, this.x - this.game.camera.x, this.y + 10 - this.game.camera.y, 60, 10);
+	this.drawHealthBar(ctx, this.x - this.game.camera.x - 50, this.y + 10 - this.game.camera.y, 250, 10);
 
 	if (this.dead) {
 		this.animationPlayer.getAnimation("death").drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
