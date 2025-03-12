@@ -102,6 +102,7 @@ class GameEngine {
         for (let i = 0; i < this.entities.length;i++) {
             this.entities[i].draw(this.ctx);
             if(this.debug) {
+                this.ctx.strokeStyle = "red";
                 this.entities[i].hitBox.drawHitBox(this.ctx);
             }
         }

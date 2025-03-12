@@ -41,3 +41,19 @@ class Entity {
     }
 
 }
+
+class checkpoint extends Entity {
+    constructor(game, x, y, spriteSheet, width,height, xSpriteOffset,ySpriteOffset, scale) {
+        super(game, x, y, spriteSheet, width,height, xSpriteOffset,ySpriteOffset, scale);
+        this.animationPlayer.addAnimation("animation", new Animation(this.spriteSheet, 0, 0, 32, 32, 4, [0.175], 0, false, false, true));
+    }
+    draw(ctx) {
+        this.animationPlayer.getAnimation("animation").drawFrame(this.game.clockTick,ctx,this.x - this.game.camera.x, this.y - this.game.camera.y, this.scale);
+        ctx.fillStyle = "white";
+        ctx.font = "14px Arial";
+        this.player = this.game.entities.find(e => e instanceof Paladin);
+        if(this.player && this.hitBox.collide(this.player.hitBox) && this.player.combatTimer > 0) {
+            ctx.fillText(`Cannot Heal While In Combat`, this.x - 50 - this.game.camera.x, this.y - this.game.camera.y);
+        }
+    }
+}

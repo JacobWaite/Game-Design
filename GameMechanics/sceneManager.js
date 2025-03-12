@@ -3,11 +3,75 @@ class SceneManager {
         this.game = game;
         this.game.camera = this;
 
+        this.soundOn = false;
+        this.soundButton = document.createElement("img");
+        this.soundButton.src = "./Sprites/menuAssets/muteButton.png"; // initial muted image
+        this.soundButton.style.position = "absolute";
+        this.soundButton.style.bottom = "230px";
+        this.soundButton.style.right = "450px";
+        this.soundButton.style.cursor = "pointer";
+
+        this.soundButton.addEventListener("click", () => {
+            this.soundOn = !this.soundOn;
+            if (this.soundOn) {
+                ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
+                this.soundButton.src = "./Sprites/menuAssets/button.png";
+            } else {
+                ASSET_MANAGER.stopBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
+                this.soundButton.src = "./Sprites/menuAssets/muteButton.png";
+            }
+            for (let key in ASSET_MANAGER.audioCache) {
+                if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
+                    ASSET_MANAGER.audioCache[key].muted = !this.soundOn;
+                }
+            }
+        });
+        // Create the instructions button.
+        this.instructionsButton = document.createElement("img");
+        this.instructionsButton.src = "./Sprites/menuAssets/questionButton.png"; // your instructions icon path
+        this.instructionsButton.style.position = "absolute";
+        this.instructionsButton.style.bottom = "230px";
+        this.instructionsButton.style.left = "16px"; // adjust corner as needed
+        this.instructionsButton.style.cursor = "pointer";
+
+        // Create the context window for instructions.
+        this.instructionsContainer = document.createElement("div");
+        this.instructionsContainer.style.position = "absolute";
+        this.instructionsContainer.style.bottom = "300px"; // position above the button
+        this.instructionsContainer.style.left = "16px";  // same horizontal position as button
+        this.instructionsContainer.style.padding = "10px";
+        this.instructionsContainer.style.backgroundColor = "rgba(92,171,7,1)";
+        this.instructionsContainer.style.color = "black";
+        this.instructionsContainer.style.border = "2px solid black";
+        this.instructionsContainer.style.display = "none"; // hidden by default
+
+        // Add the instructions content.
+        this.instructionsContainer.innerHTML = `
+        <strong>Player Controls:</strong>
+        <ul style="margin: 0; padding-left: 20px;">
+        <li>W: Up</li>
+        <li>S: Down</li>
+        <li>A: Left</li>
+        <li>D: Right</li>
+        <li>Left Mouse Button: Attack</li>
+        </ul>
+        `;
+
+        // Toggle context window on button click.
+        this.instructionsButton.addEventListener("click", () => {
+            this.instructionsContainer.style.display =
+            this.instructionsContainer.style.display === "none" ? "block" : "none";
+            });
+
+        // Append the button and the instructions container to the document.
+        document.body.appendChild(this.instructionsButton);
+        document.body.appendChild(this.instructionsContainer);
+        document.body.appendChild(this.soundButton);
         // Camera / world positioning
         this.x = 0;
         this.y = 0;
-        this.worldWidth = this.game.ctx.canvas.width * 4;
-        this.worldHeight = this.game.ctx.canvas.height * 4;
+        this.worldWidth = this.game.ctx.canvas.width * 4 - 160;
+        this.worldHeight = this.game.ctx.canvas.height * 4 - 90;
         this.currentLevel = 1;
         this.gameOver = false;
         this.paused = false;
@@ -28,14 +92,17 @@ class SceneManager {
         // Instantiate the Levels class (which loads the level’s tree entities)
         this.levels = new Levels(this.game,this.treeImage, LevelStorage);
 
-        // Now add your game entities:
-        // Add the player character (Paladin)
+       
+        this.game.addEntity(new checkpoint(this.game, 1022, 210, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
+        this.game.addEntity(new checkpoint(this.game, 650, 1640, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
+        this.game.addEntity(new checkpoint(this.game, 2199, 1945, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
+
         this.game.addEntity(new Paladin(
             this.game,
             this.game.ctx.canvas.width / 2,
             this.game.ctx.canvas.height / 2,
-            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png")],
-            20, 35, 55, 25, 1, 100, 20, 150, 10
+            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png"),ASSET_MANAGER.getAsset("./Sprites/Pray.png")],
+            24, 42, 68, 22, 1.25, 100, 20, 150, 10
         ));
         // Set reference to the player for camera tracking
         this.player = this.game.entities.find(e => e instanceof Paladin);
@@ -44,27 +111,55 @@ class SceneManager {
          // Add a Goblin enemy
          this.game.addEntity(new Goblin(
             this.game,
-            200,
-            650,
-            ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"),
-            25, 45, 30, 10, 1.25, 100, 10, 20, 5
+            1200,
+            800,
+            [ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],
+            25, 45, 18, 25, 1, 80, 8, 75, 5
         ));
 
+        this.game.addEntity(new Goblin(
+            this.game,
+            900,
+            850,
+            [ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],
+            25, 45, 18, 25, 1, 80, 5, 50, 5
+        ));
+
+        this.game.addEntity(new Goblin(
+            this.game,
+            500,
+            850,
+            [ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],
+            25, 45, 18, 25, 1, 80, 5, 50, 5
+        ));
+
+        
        this.game.addEntity(new DarkKnight(
         this.game,
-        200,
-        650,
-        ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"),
-        25, 45, 30, 10, 1.25, 100, 10, 20, 5
+        3300,
+        2200,
+        [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+        22, 32, 48, 44, 1.5, 250, 20, 120, 5
+        ));
+
+        
+
+        this.game.addEntity(new DarkKnight(
+            this.game,
+            3500,
+            2400,
+            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+            22, 32, 48, 44, 1.5, 250, 20, 120, 5
         ));
 
        this.game.addEntity(new Skeleton(
            this.game,
-           300,
-           300,
+           3800,
+           400,
            ASSET_MANAGER.getAsset("./Sprites/Ogre_Spritesheet.png"),
-           35, 75, 10, 20, 1.25, 100, 10, 20, 10
+           35, 75, 10, 20, 1, 200, 10, 5, 10
         ));
+        
         // // Add a Shopkeeper enemy/character
         // this.game.addEntity(new Shopkeeper(
         //     this.game,
@@ -205,17 +300,17 @@ class SceneManager {
         this.x = currentX;
         this.y = currentY;
         
-        if (currentX <= 0) {
-            this.x = 0;
+        if (currentX <= 37) {
+            this.x = 37;
         } 
-        if (currentY <= 0) {
-            this.y = 0;
+        if (currentY <= 37) {
+            this.y = 37;
         } 
-        if (currentX >= this.worldWidth) {
-            this.x = this.worldWidth;
+        if (currentX >= this.worldWidth - this.game.ctx.canvas.width) {
+            this.x = this.worldWidth - this.game.ctx.canvas.width;
         } 
-        if (currentY >= this.worldHeight) {
-            this.y = this.worldHeight;
+        if (currentY >= this.worldHeight - this.game.ctx.canvas.height) {
+            this.y = this.worldHeight - this.game.ctx.canvas.height;
         }
         
         
@@ -241,51 +336,18 @@ class SceneManager {
             }
             return;
         }
-
-
-        // Draw a HUD (for example, top bar with player stats)
-        ctx.fillStyle = "rgba(49, 176, 123, 0.7)";
-        ctx.fillRect(0, 0, ctx.canvas.width, 60);
-        if (this.player) {
-            this.drawHealthBar(ctx, 10, 10, 200, 20);
-            this.playergui.draw(ctx);
-            ctx.fillStyle = "white";
-            ctx.font = "16px Arial";
-            ctx.fillText(`Level ${this.player.experienceLevel}`, 10, 50);
-            ctx.fillText(`Attack: ${this.player.getStatValue("strength")}`, 100, 50);
-            ctx.fillText(`Speed: ${this.player.getStatValue("speed")}`, 250, 50);
-            ctx.fillText(`Defense: ${this.player.getStatValue("stealth")}`, 400, 50);
-        }
-
+        this.playergui.draw(ctx);
         // Draw debug information if enabled.
         if (this.game.debug) {
             this.drawDebugInfo(ctx);
         }
     }
 
-    drawHealthBar(ctx, x, y, width, height) {
-        ctx.fillStyle = "#444444";
-        ctx.fillRect(x, y, width, height);
-        if (!this.player) return;
-        const healthPercent = this.player.getStatValue("health") / 100;
-        const healthColor = this.getHealthColor(healthPercent);
-        ctx.fillStyle = healthColor;
-        ctx.fillRect(x, y, width * healthPercent, height);
-        ctx.fillStyle = "white";
-        ctx.font = "12px Arial";
-        ctx.fillText(`${this.player.getStatValue("health")} / 100`, x + width / 2 - 20, y + 15);
-    }
-
-    getHealthColor(percent) {
-        if (percent > 0.6) return "#00ff00";
-        if (percent > 0.3) return "#ffff00";
-        return "#ff0000";
-    }
-
     drawDebugInfo(ctx) {
         ctx.fillStyle = "black";
         ctx.font = "12px Arial";
         ctx.fillText(`FPS: ${Math.round(1 / this.game.clockTick)}`, 10, ctx.canvas.height - 20);
+        ctx.fillText(`AttackComplete: ${this.player.attackComplete}`, 10, ctx.canvas.height - 10);
         ctx.fillText(`Entities: ${this.game.entities.length}`, 10, ctx.canvas.height - 40);
         if (this.player) {
             ctx.fillText(`Player Pos: (${Math.round(this.player.x)}, ${Math.round(this.player.y)})`, 10, ctx.canvas.height - 60);

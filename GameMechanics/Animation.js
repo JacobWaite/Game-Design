@@ -5,6 +5,7 @@ class Animation {
         this.elapsedTime = 0;
         this.totalTime = 0;
         this.finished = false;
+        this.paused = false;
         if(variableFrameTime) {
             for(let i =0; i < this.frameDurations.length; i++) {
                 this.totalTime += this.frameDurations[i];
@@ -19,13 +20,13 @@ class Animation {
             this.elapsedTime = 0;
             this.finished = false;
         }
-        this.elapsedTime += tick;
+        if(!this.paused) {
+            this.elapsedTime += tick;
+        }
         if (this.isDone()) {
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
-            } else {
-                return;
-            }
+            } 
         }
 
         let frame = this.currentFrame();
@@ -36,10 +37,10 @@ class Animation {
             x, y,
             this.spriteWidth * scale, this.spriteHeight * scale);
         
-        if(!this.loop && this.currentFrame() == this.frameCount) {
-            this.finished = true;
-            return;
-        } 
+            if(!this.loop && this.currentFrame() == this.frameCount - 1) {
+                this.finished = true;
+                return;
+            } 
     };
 
     drawMatrixFrame(tick, ctx, x, y, scale, matrixWidth) {
@@ -48,7 +49,9 @@ class Animation {
             this.finished = false;
         }
        
-        this.elapsedTime += tick;
+        if(!this.paused) {
+            this.elapsedTime += tick;
+        }
         if (this.isDone()) {
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
@@ -90,5 +93,9 @@ class Animation {
     currentlyPlaying(){
         return this.currentFrame() < this.frameCount - 1;
     }
+    pause() {
+        this.paused = true;
+    }
+
     
 };

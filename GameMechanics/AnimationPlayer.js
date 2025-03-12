@@ -7,9 +7,10 @@ class AnimationPlayer {
     };
 
     getAnimation(animationName) {
-        this.currentAnimation = animationName;
+        this.currentAnimation = this.animations.get(animationName);
+        this.currentAnimationName = animationName;
         this.currentlyPlaying = !this.animations.get(animationName).finished; 
-        return this.animations.get(animationName);
+        return this.currentAnimation;
     };
 
     addAnimation(name, animation) {

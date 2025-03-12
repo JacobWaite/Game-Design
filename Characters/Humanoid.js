@@ -29,6 +29,7 @@ class Humanoid extends Entity{
         this.statPoints.set("strength", [strength, 1]);
         this.statPoints.set("speed", [speed, 1]);
         this.statPoints.set("stealth", [intelligence,1]);
+        this.statPoints.set("regen", [0,1]);
     }
     /**
      * sets the value of the given stat given that the value is greater than zero.
@@ -37,8 +38,9 @@ class Humanoid extends Entity{
      */
     incrementStatValue(statName, value) {
         let stats = this.statPoints.get(statName);
-        if(stats[0] > 0) {
+        if(stats[0] >= 0) {
             this.statPoints.set(statName, [stats[0]+value, stats[1]]);
+            if(stats[0] + value < 0) this.statPoints.set(statName, [0,stats[1]])
         } else {
             console.log("Value out of range for " + statName);
         }

@@ -14,7 +14,7 @@ class AStarNode {
 }
 function aStar(start, goal, grid) {
     // Debug: Log start and goal positions
-    console.log(`A* Start: (${start.x}, ${start.y}), Goal: (${goal.x}, ${goal.y})`);
+    //console.log(`A* Start: (${start.x}, ${start.y}), Goal: (${goal.x}, ${goal.y})`);
 
     // Validate start and goal nodes
     const startNode = grid.getNode(start.x, start.y);
@@ -53,8 +53,7 @@ function aStar(start, goal, grid) {
                 path.push({ x: current.x, y: current.y });
                 current = current.parent;
             }
-            console.log("A*: Path found:", path.reverse());
-            return path.reverse();
+            return path;
         }
 
         // Generate children
