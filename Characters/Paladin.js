@@ -17,7 +17,7 @@ class Paladin extends Humanoid {
         this.animationPlayer.addAnimation("attackleft", new Animation(this.spriteSheet[3], 512, 128, 128, 64, 10, [0.1,0.1,0.1,0.075,0.1,0.1,0.075,0.075, 0.05, 0.075], 0, true, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.animationPlayer.addAnimation("Kneel", new Animation(this.spriteSheet[4], 0, 0, 128, 64, 6, [0.15], 0, false, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.experienceLevel = 0;
-        this.availableStatPoints = 10;
+        this.availableStatPoints = 13;
         this.xp = 0;
         this.runes = 0;
         this.dead = false;
@@ -27,7 +27,6 @@ class Paladin extends Humanoid {
         this.idle = true;
         this.atCheckpoint = false;
         this.combatTimer = 0;
-        this.xpNeeded = Math.ceil(this.experienceLevel * 16 + 32);
         this.colliding = false;
         this.facing = 1; // 1 = right, -1 = left
         this.collisionDirection = "false";
@@ -36,6 +35,9 @@ class Paladin extends Humanoid {
         this.combatBoxRight = new BoundingBox(this, 40, 45, 68, 20, this.scale);
         this.combatBoxLeft = new BoundingBox(this, 40, 45, 30, 20, this.scale);
 
+    }
+    experienceNeeded() {
+        return this.experienceLevel * 8 + 32;
     }
     /**
      * @inheritdoc
@@ -47,11 +49,10 @@ class Paladin extends Humanoid {
             this.atCheckpoint = false;
             if(this.combatTimer > 0) this.combatTimer -= this.game.clockTick;
             if(this.getStatValue("regen") > 0 && this.totalHealth > this.getStatValue("health")) this.incrementStatValue("health", this.getStatValue("regen") * this.game.clockTick);
-            console.log(this.getStatValue("regen") * this.game.clockTick);
-            if(this.xp >= this.xpNeeded) {
-                this.experienceLevel += 1;
+            if(this.xp >= this.experienceNeeded()) {
+                this.xp -= this.experienceNeeded();
+                this.experienceLevel ++;
                 this.availableStatPoints += 1;
-                this.xp -= this.xpNeeded;
             }
             if(!this.attacking) {
                 this.attackComplete = false;

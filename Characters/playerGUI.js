@@ -21,7 +21,7 @@ class playerGUI {
 
     drawXpBar(ctx, x, y, width, height) {
         ctx.fillStyle = "white";
-        const xpPercent = this.player.xp / this.player.xpNeeded;
+        const xpPercent = this.player.xp / this.player.experienceNeeded();
         ctx.fillRect(x, y, width * xpPercent, height);
     }
 
@@ -31,7 +31,7 @@ class playerGUI {
         this.drawXpBar(ctx, 191, this.game.ctx.canvas.height - this.HUD.naturalHeight + 39, 176, 6);
         ctx.fillStyle = "white";
         ctx.font = "18px Arial";
-        ctx.fillText(`Level ${this.player.experienceLevel}     ${this.player.xp} / ${this.player.xpNeeded}`, 191, this.game.ctx.canvas.height - this.HUD.naturalHeight + 35);
+        ctx.fillText(`Level ${this.player.experienceLevel}     ${this.player.xp} / ${this.player.experienceNeeded()}`, 191, this.game.ctx.canvas.height - this.HUD.naturalHeight + 35);
         if(this.visible) {
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(this.sprite, this.x - this.sprite.naturalWidth, this.y - this.sprite.naturalHeight/2, this.sprite.naturalWidth * 3, this.sprite.naturalHeight * 3);
@@ -63,27 +63,28 @@ class playerGUI {
     onclick(button) {
         if(this.player.availableStatPoints > 0) {
             console.log(button);
-            this.player.addStatPoint(button);
-            if(button == "health" && this.player.getStatPoints(button) < 12) {
+            if(this.player.getStatPoints(button) < 11 && button == "health") {
                 let currentHealth = this.player.getStatValue(button);
-
+                this.player.addStatPoint(button);
                 this.player.incrementStatValue(button, Math.ceil (0.08 * currentHealth));
                 this.player.totalHealth = this.player.getStatValue("health");
 
-            } else if(button == "regen" && this.player.getStatPoints(button) < 12) {
+            } else if(button == "regen" && this.player.getStatPoints(button) < 11) {
+                this.player.addStatPoint(button);
                 this.player.incrementStatValue(button, 0.15);
 
-            } else if(button == "strength" && this.player.getStatPoints(button) < 12) {
-                let currentStrength = this.player.getStatValue(button);
 
+            } else if(button == "strength" && this.player.getStatPoints(button) < 11) {
+                let currentStrength = this.player.getStatValue(button);
+                this.player.addStatPoint(button);
                 this.player.incrementStatValue(button, Math.ceil(0.06 * currentStrength));
 
-            } else if(button == "stealth" && this.player.getStatPoints("intelligence") < 12) {
+            } else if(button == "stealth" && this.player.getStatPoints("intelligence") < 11) {
+                this.player.addStatPoint(button);
                 this.player.incrementStatValue(button, 0.015);
             } 
         
-            console.log(this.player.getStatValue(button));
-            console.log(this.player.getStatPoints(button));
+
 
 
             this.player.availableStatPoints -= 1;

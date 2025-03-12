@@ -46,9 +46,9 @@ class Goblin extends Humanoid {
         if (!this.dead) {
             this.dead = true;
             //Generates a random number from 3 to 6
-            const xpGained = Math.floor(Math.random() * 4) + 3;
+            //const xpGained = Math.floor(Math.random() * 4) + 3;
             const runesGained = Math.floor(Math.random() * 4) + 3;
-            
+            const xpGained = 40;
             //Gives the XP and runes to the paladin
             const paladin = this.game.entities.find(e => e instanceof Paladin);
             if (paladin) {
