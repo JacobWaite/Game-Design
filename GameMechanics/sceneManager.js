@@ -86,79 +86,20 @@ class SceneManager {
         const gridWidth = Math.ceil(this.worldWidth / TILE_SIZE);
         const gridHeight = Math.ceil(this.worldHeight / TILE_SIZE);
         this.game.grid = new Grid(gridWidth, gridHeight, TILE_SIZE);
-
+        this.openingScene = new opening();
 
         this.treeImage = ASSET_MANAGER.getAsset("./Sprites/TX_Plant.png");
 
         // Instantiate the Levels class (which loads the level’s tree entities)
         this.levels = new Levels(this.game,this.treeImage, LevelStorage);
-
+        this.loadCharacters();
        
-        this.game.addEntity(new checkpoint(this.game, 1022, 210, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
-        this.game.addEntity(new checkpoint(this.game, 650, 1640, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
-        this.game.addEntity(new checkpoint(this.game, 2199, 1945, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
-
-        this.game.addEntity(new Paladin(
-            this.game,
-            1000,
-            120,
-            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png"),ASSET_MANAGER.getAsset("./Sprites/Pray.png"),ASSET_MANAGER.getAsset("./Sprites/Death.png")],
-            24, 42, 68, 22, 1.25, 100, 20, 150, 10
-        ));
+       
         // Set reference to the player for camera tracking
         this.player = this.game.entities.find(e => e instanceof Paladin);
         this.playergui = new playerGUI(this.player,this.game,ASSET_MANAGER.getAsset("./Sprites/Gui.png"));
 
-         // Add a Goblin enemy
-        this.game.addEntity(new Goblin(this.game,1200,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-        this.game.addEntity(new Goblin(this.game,900,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-        this.game.addEntity(new Goblin(this.game,500,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-
-        this.game.addEntity(new Goblin(this.game,1800,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-        this.game.addEntity(new Goblin(this.game,1700,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-        this.game.addEntity(new Goblin(this.game,1600,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-
-        this.game.addEntity(new Goblin(this.game,800,2200,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-        this.game.addEntity(new Goblin(this.game,600,2350,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-        this.game.addEntity(new Goblin(this.game,400,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-
-        this.game.addEntity(new Goblin(this.game,1600,2000,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-        this.game.addEntity(new Goblin(this.game,1650,2050,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-        this.game.addEntity(new Goblin(this.game,1550,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 5, 50, 5));
-        
-       this.game.addEntity(new DarkKnight(
-        this.game,
-        3300,
-        2200,
-        [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-        22, 32, 48, 44, 1.5, 250, 20, 120, 5
-        ));
-        
-        this.game.addEntity(new DarkKnight(
-            this.game,
-            4000,
-            800,
-            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-            22, 32, 48, 44, 1.5, 250, 20, 120, 5
-            ));
-        
-
-        this.game.addEntity(new DarkKnight(
-            this.game,
-            3500,
-            2400,
-            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-            22, 32, 48, 44, 1.5, 250, 20, 120, 5
-        ));
-
-        this.game.addEntity(new DarkKnight(
-            this.game,
-            1200,
-            2600,
-            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-            22, 32, 48, 44, 1.5, 250, 20, 120, 5
-        ));
-
+      
         // Start screen properties
         this.startScreenActive = true;
         this.startBackground = ASSET_MANAGER.getAsset("./Sprites/Background.png");
@@ -214,39 +155,12 @@ class SceneManager {
         // Create & position the sound checkbox (optional)
         const canvas = this.game.ctx.canvas;
       
-        // this.soundLabel = document.createElement("label");
-        // this.soundLabel.htmlFor = "soundCheckbox";
-        // this.soundLabel.textContent = " SOUND";
-
-        // this.soundContainer = document.createElement("div");
-        // this.soundContainer.style.position = "absolute";
-        // this.soundContainer.style.bottom = "10px";
-        // this.soundContainer.style.left = canvas.offsetLeft + "px";
-        // this.soundContainer.style.zIndex = "1000";
-
-        // this.soundContainer.appendChild(this.soundCheckbox);
-        // this.soundContainer.appendChild(this.soundLabel);
-        // document.body.appendChild(this.soundContainer);
-
         // Mute all sounds initially
         for (let key in ASSET_MANAGER.audioCache) {
             if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
                 ASSET_MANAGER.audioCache[key].muted = true;
             }
         }
-
-        // Toggle sound muting based on checkbox state
-        // this.soundCheckbox.addEventListener("change", () => {
-        //     const mute = !this.soundCheckbox.checked;
-        //     if (this.soundCheckbox.checked) {
-        //         ASSET_MANAGER.playBackgroundMusic("./Sprites/Music/backgroundMusic.mp3");
-        //     }
-        //     for (let key in ASSET_MANAGER.audioCache) {
-        //         if (ASSET_MANAGER.audioCache.hasOwnProperty(key)) {
-        //             ASSET_MANAGER.audioCache[key].muted = mute;
-        //         }
-        //     }
-        // });
     }
 
     update() {
@@ -306,6 +220,69 @@ class SceneManager {
         if (this.game.debug) {
             this.drawDebugInfo(ctx);
         }
+    }
+
+    loadCharacters() {
+        this.game.addEntity(new checkpoint(this.game, 1022, 210, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
+        this.game.addEntity(new checkpoint(this.game, 650, 1640, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
+        this.game.addEntity(new checkpoint(this.game, 2199, 1945, ASSET_MANAGER.getAsset("./Sprites/checkpoint.png"), 22, 8, 10,42,2));
+
+        this.game.addEntity(new Paladin(
+            this.game,
+            1000,
+            120,
+            [ASSET_MANAGER.getAsset("./Sprites/Run.png"), ASSET_MANAGER.getAsset("./Sprites/Idle.png"), ASSET_MANAGER.getAsset("./Sprites/RunLeft.png"), ASSET_MANAGER.getAsset("./Sprites/Attacks.png"),ASSET_MANAGER.getAsset("./Sprites/Pray.png"),ASSET_MANAGER.getAsset("./Sprites/Death.png")],
+            24, 42, 68, 22, 1.25, 100, 20, 150, 10
+        ));
+         // Add a Goblin enemy
+    //     this.game.addEntity(new Goblin(this.game,1200,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,900,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,500,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+
+    //     this.game.addEntity(new Goblin(this.game,1800,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,1700,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,1600,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+
+    //     this.game.addEntity(new Goblin(this.game,800,2200,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,600,2350,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,400,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+
+    //     this.game.addEntity(new Goblin(this.game,1600,2000,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,1650,2050,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+    //     this.game.addEntity(new Goblin(this.game,1550,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        
+    //    this.game.addEntity(new DarkKnight(
+    //     this.game,
+    //     3300,
+    //     2200,
+    //     [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+    //     22, 32, 48, 44, 1.5, 250, 20, 120, 5
+    //     ));
+        
+    //     this.game.addEntity(new DarkKnight(
+    //         this.game,
+    //         4000,
+    //         800,
+    //         [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+    //         22, 32, 48, 44, 1.5, 250, 20, 120, 5
+    //         ));
+        
+
+    //     this.game.addEntity(new DarkKnight(
+    //         this.game,
+    //         3500,
+    //         2400,
+    //         [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+    //         22, 32, 48, 44, 1.5, 250, 20, 120, 5
+    //     ));
+
+        this.game.addEntity(new DarkKnight(
+            this.game,
+            1200,
+            2600,
+            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+            22, 32, 48, 44, 1.5, 250, 20, 120, 5
+        ));
     }
 
     drawDebugInfo(ctx) {

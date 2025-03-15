@@ -18,7 +18,7 @@ class Paladin extends Humanoid {
         this.animationPlayer.addAnimation("Kneel", new Animation(this.spriteSheet[4], 0, 0, 128, 64, 6, [0.15], 0, false, false, false)); //[0.1,0.1,0.1,0.1,0.05,0.05,0.05,0.1]
         this.animationPlayer.addAnimation("death", new Animation(this.spriteSheet[5], 0, 0, 128, 64, 4, [0.175], 0, false, false, false));
         this.experienceLevel = 0;
-        this.availableStatPoints = 0;
+        this.availableStatPoints = 10;
         this.xp = 0;
         this.runes = 0;
         this.dead = false;
@@ -46,6 +46,9 @@ class Paladin extends Humanoid {
     getRunes(){
         return this.runes;
     }
+    getHealth() {
+        return this.totalHealth;
+    }
     /**
      * @inheritdoc
      */
@@ -71,7 +74,7 @@ class Paladin extends Humanoid {
             }
             if(this.animationPlayer.currentlyPlaying && (this.animationPlayer.currentAnimationName == "attackleft" || this.animationPlayer.currentAnimationName == "attackright")) {
                 this.attacking = true;
-                if(this.animationPlayer.currentAnimation.currentFrame() == 9) {
+                if(this.animationPlayer.currentAnimation.isDone()) {
                     this.attackComplete = true;
                 } 
             }
@@ -166,6 +169,7 @@ class Paladin extends Humanoid {
             if(this.animationPlayer.currentAnimation.currentFrame() == 4) this.animationPlayer.currentAnimation.pause();
         } else if(this.attacking && this.facing == 1) {
             this.animationPlayer.getAnimation("attackright").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 8);
+            console.log(this.animationPlayer.currentAnimation.currentFrame());
 
         } else if(this.attacking && this.facing == -1) {
             this.animationPlayer.getAnimation("attackleft").drawMatrixFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y -  this.game.camera.y, this.scale, 4);

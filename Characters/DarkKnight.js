@@ -35,7 +35,7 @@ class DarkKnight extends Humanoid{
         if (!this.dead) {
             this.dead = true;
             //Generates a random number from 10 to 20
-            const xpGained = Math.floor(Math.random() +1 * 7) + 10;
+            const xpGained = Math.floor(Math.random() +1 * 80) + 10;
             const runesGained = Math.floor(Math.random() * 11) + 10;
             
             //Gives the XP and runes to the paladin
@@ -62,7 +62,7 @@ class DarkKnight extends Humanoid{
         }
         if(this.animationPlayer.currentlyPlaying && (this.animationPlayer.currentAnimationName == "attackLeft" || this.animationPlayer.currentAnimationName == "attackRight")) {
             this.attacking = true;
-            if(this.animationPlayer.currentAnimation.currentFrame() == 11) {
+            if(this.animationPlayer.currentAnimation.isDone()) {
                 this.attackComplete = true;
             } 
         }

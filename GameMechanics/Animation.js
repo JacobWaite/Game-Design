@@ -20,9 +20,7 @@ class Animation {
             this.elapsedTime = 0;
             this.finished = false;
         }
-        if(!this.paused) {
-            this.elapsedTime += tick;
-        }
+        
         if (this.isDone()) {
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
@@ -36,11 +34,13 @@ class Animation {
             this.spriteWidth, this.spriteHeight,
             x, y,
             this.spriteWidth * scale, this.spriteHeight * scale);
-        
-            if(!this.loop && this.currentFrame() == this.frameCount - 1) {
-                this.finished = true;
-                return;
-            } 
+        if(!this.paused) {
+            this.elapsedTime += tick;
+        }
+        if(!this.loop && this.isDone()) {
+            this.finished = true;
+            return;
+        } 
     };
 
     drawMatrixFrame(tick, ctx, x, y, scale, matrixWidth) {
@@ -49,9 +49,7 @@ class Animation {
             this.finished = false;
         }
        
-        if(!this.paused) {
-            this.elapsedTime += tick;
-        }
+        
         if (this.isDone()) {
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
@@ -66,8 +64,10 @@ class Animation {
             this.spriteWidth, this.spriteHeight,
             x, y,
             this.spriteWidth * scale, this.spriteHeight * scale);
-
-        if(!this.loop && this.currentFrame() == this.frameCount - 1) {
+        if(!this.paused) {
+            this.elapsedTime += tick;
+        }
+        if(!this.loop && this.isDone()) {
             this.finished = true;
             return;
         } 

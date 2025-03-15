@@ -67,14 +67,13 @@ class playerGUI {
         if(this.player.availableStatPoints > 0) {
             console.log(button);
             if(this.player.getStatPoints(button) < 11 && button == "health") {
-                let currentHealth = this.player.getStatValue(button);
                 this.player.addStatPoint(button);
-                this.player.incrementStatValue(button, Math.ceil (0.08 * currentHealth));
-                this.player.totalHealth = this.player.getStatValue("health");
+                this.player.totalHealth = this.player.getHealth() + Math.ceil (0.08 * this.player.getHealth());
+                this.player.incrementStatValue("health", this.player.totalHealth - this.player.getStatValue("health"));
 
             } else if(button == "regen" && this.player.getStatPoints(button) < 11) {
                 this.player.addStatPoint(button);
-                this.player.incrementStatValue(button, 0.15);
+                this.player.incrementStatValue(button, 0.32);
 
 
             } else if(button == "strength" && this.player.getStatPoints(button) < 11) {

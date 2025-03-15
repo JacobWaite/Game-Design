@@ -72,7 +72,7 @@ class Goblin extends Humanoid {
         }
         if(this.animationPlayer.currentlyPlaying && (this.animationPlayer.currentAnimationName == "attackLeft" || this.animationPlayer.currentAnimationName == "attackRight")) {
             this.attacking = true;
-            if(this.animationPlayer.currentAnimation.currentFrame() == 5) {
+            if(this.animationPlayer.currentAnimation.isDone()) {
                 this.attackComplete = true;
             } 
         }

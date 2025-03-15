@@ -79,8 +79,20 @@ class GameEngine {
             this.rightclick = getXandY(e);
         });
 
-        this.ctx.canvas.addEventListener("keydown", event => this.keys.set(event.key, true));
-        this.ctx.canvas.addEventListener("keyup", event => this.keys.set(event.key, false));
+        this.ctx.canvas.addEventListener("keydown", event => { 
+            this.keys.set(event.key, true);
+            if(event.key == "r") {
+                this.keys.set(event.key, false);
+
+            }
+        });
+        this.ctx.canvas.addEventListener("keyup", event => {
+            this.keys.set(event.key, false)
+            if(event.key == "r") {
+                this.keys.set(event.key, true);
+
+            }
+        });
     };
 
     addEntity(entity) {
@@ -115,7 +127,7 @@ class GameEngine {
     update() {
         if(this.won || this.gameOver) return;
         let entitiesCount = this.entities.length;
-        //this.debug = document.getElementById("debug").checked;
+        this.debug = document.getElementById("debug").checked;
         this.camera.update();
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
