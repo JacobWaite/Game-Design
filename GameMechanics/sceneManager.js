@@ -235,46 +235,46 @@ class SceneManager {
             24, 42, 68, 22, 1.25, 100, 20, 150, 10
         ));
          // Add a Goblin enemy
-    //     this.game.addEntity(new Goblin(this.game,1200,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,900,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,500,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1200,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,900,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,500,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
 
-    //     this.game.addEntity(new Goblin(this.game,1800,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,1700,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,1600,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1800,800,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1700,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1600,850,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
 
-    //     this.game.addEntity(new Goblin(this.game,800,2200,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,600,2350,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,400,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,800,2200,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,600,2350,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,400,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
 
-    //     this.game.addEntity(new Goblin(this.game,1600,2000,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,1650,2050,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
-    //     this.game.addEntity(new Goblin(this.game,1550,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1600,2000,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1650,2050,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
+        this.game.addEntity(new Goblin(this.game,1550,2100,[ASSET_MANAGER.getAsset("./Sprites/Goblin_Spritesheet.png"), ASSET_MANAGER.getAsset("./Sprites/Goblin_SpritesheetLeft.png")],25, 45, 18, 25, 1, 80, 8, 75, 5));
         
-    //    this.game.addEntity(new DarkKnight(
-    //     this.game,
-    //     3300,
-    //     2200,
-    //     [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-    //     22, 32, 48, 44, 1.5, 250, 20, 120, 5
-    //     ));
+       this.game.addEntity(new DarkKnight(
+        this.game,
+        3300,
+        2200,
+        [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+        22, 32, 48, 44, 1.5, 250, 20, 120, 5
+        ));
         
-    //     this.game.addEntity(new DarkKnight(
-    //         this.game,
-    //         4000,
-    //         800,
-    //         [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-    //         22, 32, 48, 44, 1.5, 250, 20, 120, 5
-    //         ));
+        this.game.addEntity(new DarkKnight(
+            this.game,
+            4000,
+            800,
+            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+            22, 32, 48, 44, 1.5, 250, 20, 120, 5
+            ));
         
 
-    //     this.game.addEntity(new DarkKnight(
-    //         this.game,
-    //         3500,
-    //         2400,
-    //         [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
-    //         22, 32, 48, 44, 1.5, 250, 20, 120, 5
-    //     ));
+        this.game.addEntity(new DarkKnight(
+            this.game,
+            3500,
+            2400,
+            [ASSET_MANAGER.getAsset("./Sprites/NightBorne.png"), ASSET_MANAGER.getAsset("./Sprites/NightBorneLeft.png")],
+            22, 32, 48, 44, 1.5, 250, 20, 120, 5
+        ));
 
         this.game.addEntity(new DarkKnight(
             this.game,

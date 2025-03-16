@@ -10,6 +10,7 @@ ASSET_MANAGER.queueDownload("./Sprites/NightBorneLeft.png");
 ASSET_MANAGER.queueDownload("./Sprites/Ogre_Spritesheet.png");
 ASSET_MANAGER.queueDownload("./Sprites/Background.png");
 ASSET_MANAGER.queueDownload("./Sprites/YOUDIED.png");
+ASSET_MANAGER.queueDownload("./Sprites/YouWin.png");
 ASSET_MANAGER.queueDownload("./Sprites/HUD.png");
 ASSET_MANAGER.queueDownload("./Sprites/Death.png");
 ASSET_MANAGER.queueDownload("./Sprites/checkpoint.png");
